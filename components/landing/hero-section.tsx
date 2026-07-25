@@ -11,7 +11,7 @@ interface HeroSectionProps {
 export function HeroSection({ onOpenBriefModal }: HeroSectionProps) {
   return (
     <section id="beranda" className="relative min-h-[calc(100vh-72px)] flex items-center justify-center bg-subtle-grid py-20 overflow-hidden">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col gap-8 items-center">
         
         {/* Eyebrow Pill */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-secondary border border-primary/20 text-primary text-xs font-medium">
@@ -30,7 +30,7 @@ export function HeroSection({ onOpenBriefModal }: HeroSectionProps) {
         </p>
 
         {/* Dual CTAs */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2 w-full sm:w-auto">
           <Button
             onClick={onOpenBriefModal}
             size="lg"
@@ -53,9 +53,9 @@ export function HeroSection({ onOpenBriefModal }: HeroSectionProps) {
         </div>
 
         {/* Trust Metric Badges */}
-        <div className="pt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto border-t border-border/60">
+        <div className="pt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl w-full border-t border-border/60">
           <div className="flex items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-primary">
+            <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-primary shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div className="text-left">
@@ -65,7 +65,7 @@ export function HeroSection({ onOpenBriefModal }: HeroSectionProps) {
           </div>
 
           <div className="flex items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-primary">
+            <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-primary shrink-0">
               <Code className="w-5 h-5" />
             </div>
             <div className="text-left">
@@ -75,7 +75,7 @@ export function HeroSection({ onOpenBriefModal }: HeroSectionProps) {
           </div>
 
           <div className="flex items-center justify-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-primary">
+            <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-primary shrink-0">
               <Users className="w-5 h-5" />
             </div>
             <div className="text-left">

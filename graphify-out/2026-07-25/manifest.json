@@ -75,9 +75,9 @@
     "semantic_hash": "637776aa6f7496d069afe7520c845c8a"
   },
   "AGENTS.md": {
-    "mtime": 1784959021.5596719,
-    "ast_hash": "d98f8cdafab917a725e0f54441c12136",
-    "semantic_hash": "d98f8cdafab917a725e0f54441c12136"
+    "mtime": 1784962067.4277365,
+    "ast_hash": "1e121d6d27f4913d3a5973e0fd140d1b",
+    "semantic_hash": ""
   },
   "README.md": {
     "mtime": 1784958755.03,
@@ -442,6 +442,81 @@
   "docs/superpowers/plans/2026-07-25-tefa-portal-standardization.md": {
     "mtime": 1784960606.5547583,
     "ast_hash": "3ac7fccf05498530b5b23abc2e64e849",
+    "semantic_hash": ""
+  },
+  "app/admin/briefs/page.tsx": {
+    "mtime": 1784962429.3111742,
+    "ast_hash": "1118e8e45f880d7bebff3aea58d1f360",
+    "semantic_hash": ""
+  },
+  "app/admin/layout.tsx": {
+    "mtime": 1784962406.793697,
+    "ast_hash": "da435a6268e7bf3109318343d701b6c7",
+    "semantic_hash": ""
+  },
+  "app/admin/page.tsx": {
+    "mtime": 1784962412.1270142,
+    "ast_hash": "08b3da3ca8621f46972d25acebe927a8",
+    "semantic_hash": ""
+  },
+  "app/admin/projects/page.tsx": {
+    "mtime": 1784962418.6285846,
+    "ast_hash": "17264048b7218c6c515f3d3fede0c357",
+    "semantic_hash": ""
+  },
+  "app/admin/students/page.tsx": {
+    "mtime": 1784962424.555039,
+    "ast_hash": "68eaf67c6ab2887e1871b366b71c290a",
+    "semantic_hash": ""
+  },
+  "app/api/brief/route.ts": {
+    "mtime": 1784962401.99044,
+    "ast_hash": "f488e19937f1303f908134fe724932a2",
+    "semantic_hash": ""
+  },
+  "app/showcase/[id]/page.tsx": {
+    "mtime": 1784962449.1825974,
+    "ast_hash": "771c24a957c3a465efafecaf224eb0db",
+    "semantic_hash": ""
+  },
+  "app/showcase/page.tsx": {
+    "mtime": 1784962380.247782,
+    "ast_hash": "0afd81068eb87d9ce16b41df45f6ef2b",
+    "semantic_hash": ""
+  },
+  "app/students/[id]/page.tsx": {
+    "mtime": 1784962464.5096354,
+    "ast_hash": "0ba317e88fbd4078a7b63a1d2f128889",
+    "semantic_hash": ""
+  },
+  "app/students/page.tsx": {
+    "mtime": 1784962457.5548391,
+    "ast_hash": "9bbd074579d56f8c8572b0e8b8b0ace9",
+    "semantic_hash": ""
+  },
+  "lib/data/mock-data.ts": {
+    "mtime": 1784962364.4597373,
+    "ast_hash": "1d8288771f241e8b23a8aaa11251892d",
+    "semantic_hash": ""
+  },
+  "lib/db/index.ts": {
+    "mtime": 1784962358.3467207,
+    "ast_hash": "a8400f66368e7dd436da2f650ee700c6",
+    "semantic_hash": ""
+  },
+  "lib/db/schema.ts": {
+    "mtime": 1784962354.1218445,
+    "ast_hash": "ea17c41ddc3f93fb0125de9cc535154f",
+    "semantic_hash": ""
+  },
+  "lib/utils/student-class.ts": {
+    "mtime": 1784962349.2542784,
+    "ast_hash": "ac765e89cd5a899a6b6afdb26e46c094",
+    "semantic_hash": ""
+  },
+  "docs/superpowers/plans/2026-07-25-master-prd-v1-implementation.md": {
+    "mtime": 1784962345.1970975,
+    "ast_hash": "44af4805dab97a8b136d71f81bf68eba",
     "semantic_hash": ""
   }
 }

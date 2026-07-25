@@ -80,5 +80,10 @@
   "78": "resizable.tsx",
   "79": "badge.tsx",
   "80": "admin/layout.tsx",
-  "81": "route.ts"
+  "81": "route.ts",
+  "82": "Global Constraints",
+  "83": "Next.js, SEO, and shadcn/ui Optimization Implementation Plan",
+  "84": "robots.ts",
+  "85": "cmdk",
+  "86": "api-brief.test.ts"
 }

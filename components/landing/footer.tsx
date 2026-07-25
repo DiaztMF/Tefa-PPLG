@@ -1,38 +1,70 @@
 "use client";
 
 import Link from "next/link";
-import { Code2 } from "lucide-react";
+import { Code2, MapPin, Mail, Phone } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="w-full bg-card border-t border-border py-12 text-muted-foreground text-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-heading font-bold text-base shadow-sm">
-              <Code2 className="w-4 h-4" />
-            </div>
-            <div>
-              <div className="font-heading font-semibold text-foreground text-base">
-                TeFa PPLG SMK
+    <footer className="bg-card border-t border-border py-12 text-foreground">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          
+          {/* Brand Col */}
+          <div className="md:col-span-2 flex flex-col gap-4">
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-heading font-bold text-sm shadow-sm">
+                <Code2 className="w-4 h-4" />
               </div>
-              <div className="text-xs text-muted-foreground">
-                Teaching Factory Software Development & Showcase Portal
+              <span className="font-heading font-bold text-lg text-foreground tracking-tight">
+                TeFa PPLG <span className="text-primary">SMK</span>
+              </span>
+            </Link>
+            <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
+              Teaching Factory Pengembangan Perangkat Lunak & Gim. Platform showcase karya portofolio siswa dan pusat layanan jasa pembuatan perangkat lunak terpercaya.
+            </p>
+          </div>
+
+          {/* Quick Links */}
+          <div className="flex flex-col gap-3">
+            <h4 className="font-heading font-semibold text-sm text-foreground">Navigasi Portal</h4>
+            <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+              <li><Link href="/" className="hover:text-primary transition-colors">Beranda</Link></li>
+              <li><Link href="/showcase" className="hover:text-primary transition-colors">Katalog Showcase</Link></li>
+              <li><Link href="/students" className="hover:text-primary transition-colors">Direktori Talenta Siswa</Link></li>
+              <li><Link href="/admin" className="hover:text-primary transition-colors">Admin Studio CMS</Link></li>
+            </ul>
+          </div>
+
+          {/* Contact Col */}
+          <div className="flex flex-col gap-3">
+            <h4 className="font-heading font-semibold text-sm text-foreground">Kontak & Studio</h4>
+            <div className="flex flex-col gap-2.5 text-xs text-muted-foreground">
+              <div className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                <span>Gedung Lab PPLG SMK Negeri — Studio Teaching Factory</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-primary shrink-0" />
+                <span>tefa.pplg@smk.sch.id</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-primary shrink-0" />
+                <span>+62 812-3456-7890</span>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-6 text-sm">
-            <Link href="#beranda" className="hover:text-primary transition-colors">Beranda</Link>
-            <Link href="#layanan" className="hover:text-primary transition-colors">Layanan</Link>
-            <Link href="#showcase" className="hover:text-primary transition-colors">Showcase</Link>
-            <Link href="/students" className="hover:text-primary transition-colors">Direktori Siswa</Link>
-          </div>
         </div>
 
-        <div className="pt-6 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-          <p>© {new Date().getFullYear()} TeFa PPLG SMK. All rights reserved.</p>
-          <p>Built with Next.js 15, Tailwind CSS v4 & Geist Font.</p>
+        <div className="pt-8 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+          <div>
+            © {new Date().getFullYear()} Teaching Factory PPLG SMK. Hak Cipta Dilindungi Undang-Undang.
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="hover:text-foreground cursor-pointer">Kebijakan Privasi</span>
+            <span>•</span>
+            <span className="hover:text-foreground cursor-pointer">Syarat & Ketentuan</span>
+          </div>
         </div>
       </div>
     </footer>
