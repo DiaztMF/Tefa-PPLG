@@ -1,0 +1,92 @@
+{
+  ".opencode/opencode.json": {
+    "mtime": 1784959021.5667038,
+    "ast_hash": "f2ae21510d07365eb2bce8159272c7a0",
+    "semantic_hash": "f2ae21510d07365eb2bce8159272c7a0"
+  },
+  ".opencode/plugins/graphify.js": {
+    "mtime": 1784959021.5596719,
+    "ast_hash": "b33d000860642c6f4907a877e0387a21",
+    "semantic_hash": "b33d000860642c6f4907a877e0387a21"
+  },
+  "app/layout.tsx": {
+    "mtime": 1784958825.707016,
+    "ast_hash": "aabff1c1f1897822344dbbfe9a6ae885",
+    "semantic_hash": "aabff1c1f1897822344dbbfe9a6ae885"
+  },
+  "app/page.tsx": {
+    "mtime": 1784958755.03,
+    "ast_hash": "d9b89cddd93527f29d80107123e7aa29",
+    "semantic_hash": "d9b89cddd93527f29d80107123e7aa29"
+  },
+  "components.json": {
+    "mtime": 1784958808.1084943,
+    "ast_hash": "9d20978e2f467597bebfc56163e43b31",
+    "semantic_hash": "9d20978e2f467597bebfc56163e43b31"
+  },
+  "components/theme-provider.tsx": {
+    "mtime": 1784958755.03,
+    "ast_hash": "ea196024a984b3fd838312b7e3ea3dde",
+    "semantic_hash": "ea196024a984b3fd838312b7e3ea3dde"
+  },
+  "components/ui/button.tsx": {
+    "mtime": 1784958826.1524396,
+    "ast_hash": "37ff09090166aa7d6fae96e0b081e492",
+    "semantic_hash": "37ff09090166aa7d6fae96e0b081e492"
+  },
+  "eslint.config.mjs": {
+    "mtime": 1784958755.03,
+    "ast_hash": "6c4307ffa009658f5c97f5629094c0c2",
+    "semantic_hash": "6c4307ffa009658f5c97f5629094c0c2"
+  },
+  "lib/utils.ts": {
+    "mtime": 1784958826.168507,
+    "ast_hash": "5a6fd53fdcf2be529e9cc0b718fde352",
+    "semantic_hash": "5a6fd53fdcf2be529e9cc0b718fde352"
+  },
+  "next.config.ts": {
+    "mtime": 1784958755.03,
+    "ast_hash": "6492dd08f86361d65e95035785a8ae7b",
+    "semantic_hash": "6492dd08f86361d65e95035785a8ae7b"
+  },
+  "package.json": {
+    "mtime": 1784958825.183988,
+    "ast_hash": "842be97ed967edaacddbc1b771bab96b",
+    "semantic_hash": "842be97ed967edaacddbc1b771bab96b"
+  },
+  "postcss.config.mjs": {
+    "mtime": 1784958755.03,
+    "ast_hash": "8b1fad1b1e72bac5525090c8e8000dc8",
+    "semantic_hash": "8b1fad1b1e72bac5525090c8e8000dc8"
+  },
+  "tsconfig.json": {
+    "mtime": 1784958755.03,
+    "ast_hash": "f031e1bf14375f11567de3bc872ca62b",
+    "semantic_hash": "f031e1bf14375f11567de3bc872ca62b"
+  },
+  ".agents/rules/graphify.md": {
+    "mtime": 1784959040.0631275,
+    "ast_hash": "a0e4d192b9e2e17256124dbfc8e24e6a",
+    "semantic_hash": "a0e4d192b9e2e17256124dbfc8e24e6a"
+  },
+  ".agents/workflows/graphify.md": {
+    "mtime": 1784959040.0651484,
+    "ast_hash": "637776aa6f7496d069afe7520c845c8a",
+    "semantic_hash": "637776aa6f7496d069afe7520c845c8a"
+  },
+  "AGENTS.md": {
+    "mtime": 1784959021.5596719,
+    "ast_hash": "d98f8cdafab917a725e0f54441c12136",
+    "semantic_hash": "d98f8cdafab917a725e0f54441c12136"
+  },
+  "README.md": {
+    "mtime": 1784958755.03,
+    "ast_hash": "fab60f412cc9016f85fcc1f484d778bc",
+    "semantic_hash": "fab60f412cc9016f85fcc1f484d778bc"
+  },
+  "pnpm-workspace.yaml": {
+    "mtime": 1784958755.03,
+    "ast_hash": "1b02311313ece53ee401563ce08d9d33",
+    "semantic_hash": "1b02311313ece53ee401563ce08d9d33"
+  }
+}

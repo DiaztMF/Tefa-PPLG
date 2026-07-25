@@ -1,0 +1,5 @@
+D:\Project\Web Project\Private Web\Tefa\.agents\rules\graphify.md
+D:\Project\Web Project\Private Web\Tefa\.agents\workflows\graphify.md
+D:\Project\Web Project\Private Web\Tefa\AGENTS.md
+D:\Project\Web Project\Private Web\Tefa\README.md
+D:\Project\Web Project\Private Web\Tefa\pnpm-workspace.yaml
