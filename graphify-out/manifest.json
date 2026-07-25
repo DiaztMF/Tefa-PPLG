@@ -10,8 +10,8 @@
     "semantic_hash": "b33d000860642c6f4907a877e0387a21"
   },
   "app/layout.tsx": {
-    "mtime": 1784962962.910994,
-    "ast_hash": "746b529746487f9cec0d883225c94634",
+    "mtime": 1784963099.7405026,
+    "ast_hash": "7ee5184a329e64ae73d44b2fea5c860c",
     "semantic_hash": ""
   },
   "app/page.tsx": {
@@ -470,8 +470,8 @@
     "semantic_hash": ""
   },
   "app/api/brief/route.ts": {
-    "mtime": 1784962973.785082,
-    "ast_hash": "62c539ac027344c121034917f7c77f44",
+    "mtime": 1784963113.1907995,
+    "ast_hash": "953825b15f6e19ac95314fc207f187ab",
     "semantic_hash": ""
   },
   "app/showcase/[id]/page.tsx": {
@@ -500,8 +500,8 @@
     "semantic_hash": ""
   },
   "lib/db/index.ts": {
-    "mtime": 1784962999.7517893,
-    "ast_hash": "ce6b39fcc60c5f79f72d62d4af8667f4",
+    "mtime": 1784963117.1668544,
+    "ast_hash": "cb6cb086b36418275b3329dc9e5a7cc1",
     "semantic_hash": ""
   },
   "lib/db/schema.ts": {
@@ -520,13 +520,13 @@
     "semantic_hash": ""
   },
   "app/robots.ts": {
-    "mtime": 1784962966.5032456,
-    "ast_hash": "029837959dcab55aa2a9345d515fc59c",
+    "mtime": 1784963104.0314438,
+    "ast_hash": "882542426c6f5f9b32ffac2148566275",
     "semantic_hash": ""
   },
   "app/sitemap.ts": {
-    "mtime": 1784962970.210445,
-    "ast_hash": "b3bf81487046d84d8e3441aab1cfd7a6",
+    "mtime": 1784963107.9757576,
+    "ast_hash": "6cfcffd0b88475c85320924e2d7310ef",
     "semantic_hash": ""
   },
   "tests/api-brief.test.ts": {
@@ -552,11 +552,6 @@
   "docs/superpowers/plans/2026-07-25-nextjs-seo-and-shadcn-audit.md": {
     "mtime": 1784962763.9755368,
     "ast_hash": "72c86feea008de5cf9bfd8d9ca0fcb6a",
-    "semantic_hash": ""
-  },
-  "lib/config/env.ts": {
-    "mtime": 1784962958.426762,
-    "ast_hash": "1b8c58f3c534bf8f1d1a4074d507fe06",
     "semantic_hash": ""
   }
 }

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { env } from "@/lib/config/env";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,12 +13,13 @@ export async function POST(request: NextRequest) {
     }
 
     const briefId = `brief-${Date.now()}`;
-    const targetWaNumber = env.whatsappNumber.replace(/[^0-9]/g, "");
+    const targetNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6281234567890";
+    const schoolName = process.env.NEXT_PUBLIC_SCHOOL_NAME || "SMK Negeri 2 Surakarta";
 
     // Formatted WhatsApp message string
-    const formattedMessage = `Halo Admin TeFa PPLG ${encodeURIComponent(env.schoolName)},%0A%0ASaya ingin berkonsultasi mengenai proyek:%0A- *Nama:* ${encodeURIComponent(name)}%0A- *Instansi/Perusahaan:* ${encodeURIComponent(org || "-")}%0A- *No. WA:* ${encodeURIComponent(whatsapp)}%0A- *Layanan:* ${encodeURIComponent(service)}%0A- *Estimasi Budget:* ${encodeURIComponent(budget)}%0A- *Briefing Proyek:* ${encodeURIComponent(brief)}`;
+    const formattedMessage = `Halo Admin TeFa PPLG ${encodeURIComponent(schoolName)},%0A%0ASaya ingin berkonsultasi mengenai proyek:%0A- *Nama:* ${encodeURIComponent(name)}%0A- *Instansi/Perusahaan:* ${encodeURIComponent(org || "-")}%0A- *No. WA:* ${encodeURIComponent(whatsapp)}%0A- *Layanan:* ${encodeURIComponent(service)}%0A- *Estimasi Budget:* ${encodeURIComponent(budget)}%0A- *Briefing Proyek:* ${encodeURIComponent(brief)}`;
 
-    const waRedirectUrl = `https://wa.me/${targetWaNumber}?text=${formattedMessage}`;
+    const waRedirectUrl = `https://wa.me/${targetNumber.replace(/[^0-9]/g, "")}?text=${formattedMessage}`;
 
     return NextResponse.json({
       success: true,

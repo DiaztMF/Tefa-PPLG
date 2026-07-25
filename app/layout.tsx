@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Geist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { env } from "@/lib/config/env";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -16,6 +15,9 @@ const geist = Geist({
   display: "swap",
 });
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+const schoolName = process.env.NEXT_PUBLIC_SCHOOL_NAME || "SMK Negeri 2 Surakarta";
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -25,15 +27,15 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(env.appUrl),
+  metadataBase: new URL(appUrl),
   title: {
-    default: `TeFa PPLG — ${env.schoolName}`,
-    template: `%s | TeFa PPLG ${env.schoolName}`,
+    default: `TeFa PPLG — ${schoolName}`,
+    template: `%s | TeFa PPLG ${schoolName}`,
   },
-  description: `Saluran resmi portofolio karya siswa dan pemesanan layanan perangkat lunak Teaching Factory PPLG ${env.schoolName}.`,
+  description: `Saluran resmi portofolio karya siswa dan pemesanan layanan perangkat lunak Teaching Factory PPLG ${schoolName}.`,
   keywords: [
     "TeFa PPLG",
-    env.schoolName,
+    schoolName,
     "Software House SMK",
     "Portofolio Siswa",
     "Showcase Software",
@@ -44,14 +46,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "id_ID",
     url: "/",
-    siteName: `TeFa PPLG ${env.schoolName}`,
-    title: `TeFa PPLG — ${env.schoolName}`,
-    description: `Saluran resmi portofolio karya siswa dan pemesanan layanan perangkat lunak Teaching Factory PPLG ${env.schoolName}.`,
+    siteName: `TeFa PPLG ${schoolName}`,
+    title: `TeFa PPLG — ${schoolName}`,
+    description: `Saluran resmi portofolio karya siswa dan pemesanan layanan perangkat lunak Teaching Factory PPLG ${schoolName}.`,
   },
   twitter: {
     card: "summary_large_image",
-    title: `TeFa PPLG — ${env.schoolName}`,
-    description: `Saluran resmi portofolio karya siswa dan pemesanan layanan perangkat lunak Teaching Factory PPLG ${env.schoolName}.`,
+    title: `TeFa PPLG — ${schoolName}`,
+    description: `Saluran resmi portofolio karya siswa dan pemesanan layanan perangkat lunak Teaching Factory PPLG ${schoolName}.`,
   },
   alternates: {
     canonical: "/",
