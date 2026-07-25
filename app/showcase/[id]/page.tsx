@@ -6,8 +6,9 @@ import { Navbar } from "@/components/landing/navbar";
 import { Footer } from "@/components/landing/footer";
 import { BriefModal } from "@/components/landing/brief-modal";
 import { mockProjects } from "@/lib/data/mock-data";
+import { getProjectPreviewImage } from "@/lib/utils/preview-image";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ExternalLink, Users, Code, Calendar, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, Users, Code, Calendar, CheckCircle2, Monitor, Image as ImageIcon } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -16,8 +17,10 @@ interface PageProps {
 export default function ProjectDetailPage({ params }: PageProps) {
   const resolvedParams = use(params);
   const [isBriefModalOpen, setIsBriefModalOpen] = useState(false);
+  const [previewMode, setPreviewMode] = useState<"screenshot" | "iframe">("screenshot");
 
   const project = mockProjects.find((p) => p.id === resolvedParams.id) || mockProjects[0];
+  const previewImage = getProjectPreviewImage(project.imageUrl, project.liveUrl);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col antialiased">
@@ -57,23 +60,44 @@ export default function ProjectDetailPage({ params }: PageProps) {
           </div>
 
           {/* Mac Browser Frame Preview Mockup */}
-          <div className="rounded-xl border border-border bg-card overflow-hidden shadow-lg">
-            <div className="bg-muted px-4 py-3 border-b border-border flex items-center justify-between">
+          <div className="rounded-xl border border-border bg-card overflow-hidden shadow-lg space-y-0">
+            <div className="bg-muted px-4 py-3 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-400" />
                 <div className="w-3 h-3 rounded-full bg-yellow-400" />
                 <div className="w-3 h-3 rounded-full bg-green-400" />
-                <span className="text-xs font-mono text-muted-foreground ml-3 hidden sm:inline">
-                  https://tefa.smk/{project.id}
+                <span className="text-xs font-mono text-muted-foreground ml-3 truncate max-w-xs sm:max-w-sm">
+                  {project.liveUrl || `https://tefa.smkn2surakarta.sch.id/${project.id}`}
                 </span>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2">
+              {/* Mode Switcher & External Action Buttons */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {project.liveUrl && (
+                  <div className="flex items-center bg-background rounded-lg border border-border p-0.5 text-xs mr-2">
+                    <button
+                      onClick={() => setPreviewMode("screenshot")}
+                      className={`px-2.5 py-1 rounded-md flex items-center gap-1 font-medium transition-colors ${
+                        previewMode === "screenshot" ? "bg-primary text-primary-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      <ImageIcon className="w-3 h-3" /> Screenshot
+                    </button>
+                    <button
+                      onClick={() => setPreviewMode("iframe")}
+                      className={`px-2.5 py-1 rounded-md flex items-center gap-1 font-medium transition-colors ${
+                        previewMode === "iframe" ? "bg-primary text-primary-foreground shadow-xs" : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      <Monitor className="w-3 h-3" /> Live iFrame
+                    </button>
+                  </div>
+                )}
+
                 {project.liveUrl && (
                   <Button asChild size="sm" variant="outline" className="h-8 text-xs">
                     <a href={project.liveUrl} target="_blank" rel="noreferrer">
-                      <ExternalLink className="w-3.5 h-3.5 mr-1" /> Live Demo
+                      <ExternalLink className="w-3.5 h-3.5 mr-1" /> Kunjungi Link Deployment
                     </a>
                   </Button>
                 )}
@@ -87,21 +111,40 @@ export default function ProjectDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            <div className="h-80 sm:h-96 bg-gradient-to-br from-blue-600 via-indigo-700 to-slate-900 p-8 flex items-center justify-center text-white text-center">
-              <div className="space-y-4 max-w-md">
-                <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center mx-auto text-2xl font-bold">
-                  💻
+            {/* Preview Body */}
+            <div className="h-[420px] sm:h-[500px] bg-slate-950 relative overflow-hidden flex items-center justify-center">
+              {previewMode === "iframe" && project.liveUrl ? (
+                <iframe
+                  src={project.liveUrl}
+                  title={`Live Preview ${project.title}`}
+                  className="w-full h-full border-0"
+                  loading="lazy"
+                  sandbox="allow-scripts allow-same-origin allow-forms"
+                />
+              ) : previewImage ? (
+                <img
+                  src={previewImage}
+                  alt={`Preview ${project.title}`}
+                  className="w-full h-full object-cover object-top"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-blue-600 via-indigo-700 to-slate-900 p-8 flex flex-col items-center justify-center text-white text-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center font-bold text-2xl">
+                    💻
+                  </div>
+                  <h2 className="font-heading text-2xl font-semibold">{project.title}</h2>
+                  <p className="text-xs opacity-80 max-w-sm">
+                    Tampilan antarmuka proyek software Teaching Factory SMKN 2 Surakarta.
+                  </p>
                 </div>
-                <h2 className="font-heading text-2xl font-semibold">{project.title}</h2>
-                <p className="text-xs opacity-80">Interactive Application Preview Screenshot Frame</p>
-              </div>
+              )}
             </div>
           </div>
 
           {/* Project Details Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 pt-4">
             
-            {/* Left Content Column */}
+            {/* Left Column */}
             <div className="lg:col-span-2 space-y-8">
               <div className="space-y-4">
                 <h3 className="font-heading font-semibold text-xl text-foreground">
@@ -112,7 +155,6 @@ export default function ProjectDetailPage({ params }: PageProps) {
                 </p>
               </div>
 
-              {/* Key Features */}
               <div className="space-y-4">
                 <h3 className="font-heading font-semibold text-xl text-foreground">
                   Fitur Kunci & Keunggulan
@@ -138,7 +180,7 @@ export default function ProjectDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Right Sidebar Column */}
+            {/* Right Column */}
             <div className="space-y-8">
               
               {/* Tech Stack */}
@@ -188,7 +230,7 @@ export default function ProjectDetailPage({ params }: PageProps) {
               <div className="p-6 rounded-xl bg-primary text-primary-foreground space-y-4 shadow-md">
                 <h4 className="font-heading font-semibold text-lg">Tertarik Membuat Proyek Serupa?</h4>
                 <p className="text-xs text-primary-foreground/90 leading-relaxed">
-                  Konsultasikan kebutuhan software Anda bersama tim Teaching Factory PPLG SMK.
+                  Konsultasikan kebutuhan software Anda bersama tim Teaching Factory PPLG SMKN 2 Surakarta.
                 </p>
                 <Button
                   onClick={() => setIsBriefModalOpen(true)}

@@ -16,6 +16,7 @@ export interface ProjectMock {
   description: string;
   longDescription: string;
   coverImage?: string;
+  imageUrl?: string;
   liveUrl?: string;
   repoUrl?: string;
   techStack: string[];
@@ -77,7 +78,7 @@ export const mockProjects: ProjectMock[] = [
     category: "Web Application",
     description: "Platform portal e-commerce dan manajemen stok barang terintegrasi untuk UMKM lokal.",
     longDescription: "Aplikasi ini mempermudah pelaku UMKM dalam mengelola katalog produk, mencatat inventaris barang secara real-time, dan menerima pesanan daring melalui antarmuka yang modern dan responsif.",
-    liveUrl: "https://demo-umkm.tefa.smk",
+    liveUrl: "https://nextjs.org",
     repoUrl: "https://github.com/tefa-pplg/portal-umkm",
     techStack: ["Next.js 15", "TypeScript", "Tailwind CSS v4", "PostgreSQL"],
     team: [
@@ -93,7 +94,7 @@ export const mockProjects: ProjectMock[] = [
     category: "Mobile Application",
     description: "Aplikasi mobile presensi berbasis lokasi dan portal informasi akademik siswa.",
     longDescription: "Solusi aplikasi mobile berbasis React Native dan Expo untuk mempermudah presensi siswa berbasis geofencing GPS, pengisian jurnal harian, dan notifikasi ke akun orang tua secara otomatis.",
-    liveUrl: "https://demo-smartschool.tefa.smk",
+    liveUrl: "https://reactnative.dev",
     repoUrl: "https://github.com/tefa-pplg/smart-school-mobile",
     techStack: ["React Native", "Expo", "Express API", "Tailwind CSS"],
     team: [
@@ -110,7 +111,7 @@ export const mockProjects: ProjectMock[] = [
     category: "Web Application",
     description: "SaaS rekam medis dan antrean pasien klinik kesehatan berbasis web.",
     longDescription: "Aplikasi SaaS pengelolaan data pasien, rekam medis digital, resep obat, dan antrean otomatis klinik terpadu dengan standar keamanan tinggi dan aksesibilitas ramah pengguna.",
-    liveUrl: "https://demo-klinik.tefa.smk",
+    liveUrl: "https://tailwind-merge.com",
     repoUrl: "https://github.com/tefa-pplg/clinic-saas",
     techStack: ["TypeScript", "Next.js 15", "Drizzle ORM", "shadcn/ui"],
     team: [
@@ -125,7 +126,7 @@ export const mockProjects: ProjectMock[] = [
     category: "Digital Products & Templates",
     description: "Koleksi komponen UI modern dan boilerplate Next.js siap pakai karya riset TeFa.",
     longDescription: "Digital product buatan studio TeFa yang memuat 40+ komponen UI terstandardisasi, panduan token warna, serta template landing page responsif berbasis Tailwind CSS v4.",
-    liveUrl: "https://design.tefa.smk",
+    liveUrl: "https://ui.shadcn.com",
     repoUrl: "https://github.com/tefa-pplg/nova-design-system",
     techStack: ["React", "Tailwind CSS v4", "shadcn/ui", "Figma Tokens"],
     team: [

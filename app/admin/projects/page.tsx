@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Trash2, Edit3, Users, CheckCircle2 } from "lucide-react";
+import { Plus, Trash2, Users, CheckCircle2, Globe, Image as ImageIcon } from "lucide-react";
 
 export default function AdminProjectsPage() {
   const [projectList, setProjectList] = useState<ProjectMock[]>(mockProjects);
@@ -17,6 +17,8 @@ export default function AdminProjectsPage() {
     category: "Web Application",
     description: "",
     techStackStr: "",
+    liveUrl: "",
+    imageUrl: "",
   });
 
   const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
@@ -43,13 +45,15 @@ export default function AdminProjectsPage() {
       description: newProject.description,
       longDescription: newProject.description,
       techStack: techStack.length > 0 ? techStack : ["Next.js", "TypeScript"],
+      liveUrl: newProject.liveUrl || undefined,
+      imageUrl: newProject.imageUrl || undefined,
       team: team.length > 0 ? team : [{ studentId: "std-01", studentName: "Aditya Pratama", role: "Developer" }],
       createdAt: new Date().toISOString().split("T")[0],
     };
 
     setProjectList([item, ...projectList]);
     setIsAdding(false);
-    setNewProject({ title: "", category: "Web Application", description: "", techStackStr: "" });
+    setNewProject({ title: "", category: "Web Application", description: "", techStackStr: "", liveUrl: "", imageUrl: "" });
     setSelectedStudentIds([]);
     setStudentRoles({});
   };
@@ -77,7 +81,7 @@ export default function AdminProjectsPage() {
             Manajemen Proyek Showcase
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            Tambah proyek baru, atur deskripsi, dan petakan multi-role siswa pengembang.
+            Tambah proyek baru, isi link deployment untuk preview otomatis, dan petakan multi-role siswa.
           </p>
         </div>
 
@@ -97,7 +101,7 @@ export default function AdminProjectsPage() {
               <Label className="text-xs font-medium">Judul Proyek *</Label>
               <Input
                 required
-                placeholder="Contoh: Portal E-Commerce UMKM"
+                placeholder="Contoh: Portal E-Commerce UMKM Surakarta"
                 value={newProject.title}
                 onChange={(e) => setNewProject({ ...newProject, title: e.target.value })}
               />
@@ -119,6 +123,37 @@ export default function AdminProjectsPage() {
                   <SelectItem value="Digital Products & Templates">Digital Products & Templates</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+          </div>
+
+          {/* Deployment & Image Preview Config */}
+          <div className="p-4 rounded-lg bg-secondary/60 border border-border space-y-4">
+            <div className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+              <Globe className="w-4 h-4 text-primary" /> Fitur Preview Otomatis & Screenshot Link Deployment
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium">Link Deployment Website (Auto Preview Screenshot) *</Label>
+                <Input
+                  type="url"
+                  placeholder="https://proyek-umkm.vercel.app"
+                  value={newProject.liveUrl}
+                  onChange={(e) => setNewProject({ ...newProject, liveUrl: e.target.value })}
+                />
+                <p className="text-[11px] text-muted-foreground">Jika diisi, sistem akan otomatis menggenerasi screenshot preview website!</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium">URL Custom Screenshot Image (Opsional)</Label>
+                <Input
+                  type="url"
+                  placeholder="https://example.com/screenshot.png"
+                  value={newProject.imageUrl}
+                  onChange={(e) => setNewProject({ ...newProject, imageUrl: e.target.value })}
+                />
+                <p className="text-[11px] text-muted-foreground">Isi jika ingin menimpa (override) preview screenshot bawaan.</p>
+              </div>
             </div>
           </div>
 
@@ -218,6 +253,11 @@ export default function AdminProjectsPage() {
                   </span>
                 </div>
                 <p className="text-muted-foreground">{proj.description}</p>
+                {proj.liveUrl && (
+                  <div className="text-[11px] text-emerald-600 flex items-center gap-1 font-mono">
+                    <Globe className="w-3 h-3" /> {proj.liveUrl} (Auto Preview Active)
+                  </div>
+                )}
                 <div className="text-[11px] text-muted-foreground flex items-center gap-1 pt-1">
                   <Users className="w-3 h-3 text-primary" /> Tim Siswa: {proj.team.map((t) => `${t.studentName} (${t.role})`).join(", ")}
                 </div>

@@ -1,16 +1,16 @@
 # Graph Report - Tefa  (2026-07-25)
 
 ## Corpus Check
-- 111 files · ~35,466 words
+- 110 files · ~35,431 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 747 nodes · 1289 edges · 76 communities (46 shown, 30 thin omitted)
+- 745 nodes · 1278 edges · 87 communities (55 shown, 32 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 1 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3844076e`
+- Built from commit: `0be11bdd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -44,7 +44,9 @@
 - navigation-menu.tsx
 - Global Constraints
 - pagination.tsx
+- table.tsx
 - button.tsx
+- card.tsx
 - empty.tsx
 - dependencies
 - avatar.tsx
@@ -54,7 +56,9 @@
 - alert.tsx
 - tabs.tsx
 - RTK - Rust Token Killer (Google Antigravity)
+- button-group.tsx
 - marker.tsx
+- message.tsx
 - Global Constraints
 - opencode.json
 - kbd.tsx
@@ -79,11 +83,16 @@
 - @shadcn/react
 - sonner
 - tailwind-merge
+- app/layout.tsx
 - vaul
 - popover.tsx
+- native-select.tsx
+- hover-card.tsx
+- badge.tsx
 - resizable.tsx
 - Global Constraints
 - Next.js, SEO, and shadcn/ui Optimization Implementation Plan
+- tw-animate-css
 - cmdk
 
 ## God Nodes (most connected - your core abstractions)
@@ -101,23 +110,23 @@
 ## Surprising Connections (you probably didn't know these)
 - `RootLayout()` --calls--> `cn()`  [EXTRACTED]
   app/layout.tsx → lib/utils.ts
-- `AlertTitle()` --calls--> `cn()`  [EXTRACTED]
-  components/ui/alert.tsx → lib/utils.ts
-- `AlertDescription()` --calls--> `cn()`  [EXTRACTED]
-  components/ui/alert.tsx → lib/utils.ts
-- `AlertAction()` --calls--> `cn()`  [EXTRACTED]
-  components/ui/alert.tsx → lib/utils.ts
-- `AttachmentContent()` --calls--> `cn()`  [EXTRACTED]
-  components/ui/attachment.tsx → lib/utils.ts
+- `AlertDialogOverlay()` --calls--> `cn()`  [EXTRACTED]
+  components/ui/alert-dialog.tsx → lib/utils.ts
+- `AlertDialogContent()` --calls--> `cn()`  [EXTRACTED]
+  components/ui/alert-dialog.tsx → lib/utils.ts
+- `AlertDialogHeader()` --calls--> `cn()`  [EXTRACTED]
+  components/ui/alert-dialog.tsx → lib/utils.ts
+- `AlertDialogFooter()` --calls--> `cn()`  [EXTRACTED]
+  components/ui/alert-dialog.tsx → lib/utils.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (76 total, 30 thin omitted)
+## Communities (87 total, 32 thin omitted)
 
 ### Community 0 - "Core Runtime Dependencies"
 Cohesion: 0.06
-Nodes (32): ThemeHotkey(), Carousel(), CarouselApi, CarouselContent(), CarouselContext, CarouselContextProps, CarouselItem(), CarouselNext() (+24 more)
+Nodes (33): ThemeHotkey(), Carousel(), CarouselApi, CarouselContent(), CarouselContext, CarouselContextProps, CarouselItem(), CarouselNext() (+25 more)
 
 ### Community 1 - "Development Tooling & Types"
 Cohesion: 0.05
@@ -132,12 +141,12 @@ Cohesion: 0.09
 Nodes (21): aliases, components, hooks, lib, ui, utils, iconLibrary, menuAccent (+13 more)
 
 ### Community 4 - "Next.js App Components"
-Cohesion: 0.08
-Nodes (15): Badge(), badgeVariants, Checkbox(), HoverCardContent(), NativeSelect(), NativeSelectOptGroup(), NativeSelectOption(), NativeSelectProps (+7 more)
+Cohesion: 0.22
+Nodes (4): Checkbox(), Progress(), Spinner(), Switch()
 
 ### Community 5 - "Package Manager Configuration"
 Cohesion: 0.06
-Nodes (39): Sheet(), SheetContent(), SheetDescription(), SheetFooter(), SheetHeader(), SheetOverlay(), SheetTitle(), Sidebar() (+31 more)
+Nodes (38): Sheet(), SheetContent(), SheetDescription(), SheetFooter(), SheetHeader(), SheetOverlay(), SheetTitle(), Sidebar() (+30 more)
 
 ### Community 6 - "TypeScript Inclusions & Exclusions"
 Cohesion: 0.07
@@ -150,6 +159,10 @@ Nodes (12): Item(), ItemActions(), ItemContent(), ItemDescription(), ItemFooter(
 ### Community 8 - "Graphify Rule System"
 Cohesion: 0.67
 Nodes (3): Graphify Knowledge Graph Rule, Graphify Workflow Definition, Agents Graphify Integration Rules
+
+### Community 16 - "cn"
+Cohesion: 0.11
+Nodes (26): Accordion(), AccordionContent(), AccordionItem(), AccordionTrigger(), ComboboxChip(), ComboboxChips(), ComboboxChipsInput(), ComboboxClear() (+18 more)
 
 ### Community 17 - "TeFa PPLG Design System Specification"
 Cohesion: 0.10
@@ -172,8 +185,8 @@ Cohesion: 0.25
 Nodes (7): Breadcrumb(), BreadcrumbEllipsis(), BreadcrumbItem(), BreadcrumbLink(), BreadcrumbList(), BreadcrumbPage(), BreadcrumbSeparator()
 
 ### Community 22 - "alert-dialog.tsx"
-Cohesion: 0.08
-Nodes (37): Accordion(), AccordionContent(), AccordionItem(), AccordionTrigger(), AlertDialogAction(), AlertDialogCancel(), AlertDialogContent(), AlertDialogDescription() (+29 more)
+Cohesion: 0.15
+Nodes (9): AlertDialogAction(), AlertDialogCancel(), AlertDialogContent(), AlertDialogDescription(), AlertDialogFooter(), AlertDialogHeader(), AlertDialogMedia(), AlertDialogOverlay() (+1 more)
 
 ### Community 23 - "Product Requirement Document (PRD)"
 Cohesion: 0.15
@@ -199,9 +212,17 @@ Nodes (9): Global Constraints, Task 1: Build `BriefModal` Component, Task 2: Bui
 Cohesion: 0.22
 Nodes (7): Pagination(), PaginationContent(), PaginationEllipsis(), PaginationLink(), PaginationLinkProps, PaginationNext(), PaginationPrevious()
 
+### Community 29 - "table.tsx"
+Cohesion: 0.22
+Nodes (8): Table(), TableBody(), TableCaption(), TableCell(), TableFooter(), TableHead(), TableHeader(), TableRow()
+
 ### Community 30 - "button.tsx"
-Cohesion: 0.13
-Nodes (16): ButtonGroup(), ButtonGroupSeparator(), ButtonGroupText(), buttonGroupVariants, Field(), FieldContent(), FieldDescription(), FieldError() (+8 more)
+Cohesion: 0.18
+Nodes (11): Field(), FieldContent(), FieldDescription(), FieldError(), FieldGroup(), FieldLabel(), FieldLegend(), FieldSeparator() (+3 more)
+
+### Community 31 - "card.tsx"
+Cohesion: 0.25
+Nodes (7): Card(), CardAction(), CardContent(), CardDescription(), CardFooter(), CardHeader(), CardTitle()
 
 ### Community 32 - "empty.tsx"
 Cohesion: 0.29
@@ -209,7 +230,7 @@ Nodes (7): Empty(), EmptyContent(), EmptyDescription(), EmptyHeader(), EmptyMedi
 
 ### Community 33 - "dependencies"
 Cohesion: 0.29
-Nodes (7): better-auth, dependencies, better-auth, radix-ui, tw-animate-css, radix-ui, tw-animate-css
+Nodes (7): @base-ui/react, better-auth, dependencies, @base-ui/react, better-auth, radix-ui, radix-ui
 
 ### Community 34 - "avatar.tsx"
 Cohesion: 0.29
@@ -220,8 +241,8 @@ Cohesion: 0.38
 Nodes (6): Bubble(), BubbleContent(), BubbleGroup(), BubbleReactions(), bubbleReactionsVariants, bubbleVariants
 
 ### Community 36 - "message.tsx"
-Cohesion: 0.06
-Nodes (37): ComboboxChip(), ComboboxChips(), ComboboxChipsInput(), ComboboxClear(), ComboboxContent(), ComboboxEmpty(), ComboboxGroup(), ComboboxInput() (+29 more)
+Cohesion: 0.09
+Nodes (22): Command(), CommandDialog(), CommandEmpty(), CommandGroup(), CommandInput(), CommandItem(), CommandList(), CommandSeparator() (+14 more)
 
 ### Community 37 - "message-scroller.tsx"
 Cohesion: 0.29
@@ -239,9 +260,17 @@ Nodes (5): Tabs(), TabsContent(), TabsList(), tabsListVariants, TabsTrigger()
 Cohesion: 0.40
 Nodes (4): Meta Commands, RTK - Rust Token Killer (Google Antigravity), Rule, Why
 
+### Community 41 - "button-group.tsx"
+Cohesion: 0.38
+Nodes (5): ButtonGroup(), ButtonGroupSeparator(), ButtonGroupText(), buttonGroupVariants, Separator()
+
 ### Community 42 - "marker.tsx"
 Cohesion: 0.50
 Nodes (4): Marker(), MarkerContent(), MarkerIcon(), markerVariants
+
+### Community 43 - "message.tsx"
+Cohesion: 0.29
+Nodes (6): Message(), MessageAvatar(), MessageContent(), MessageFooter(), MessageGroup(), MessageHeader()
 
 ### Community 44 - "Global Constraints"
 Cohesion: 0.40
@@ -256,16 +285,24 @@ Cohesion: 0.22
 Nodes (8): Global Constraints, Master TeFa Portal V1 Implementation Plan, Task 1: Database Schema & Utilities (`lib/db/schema.ts` & `lib/utils/student-class.ts`), Task 2: Build Showcase Catalogue Page (`/showcase`) & Detail Page (`/showcase/[id]`), Task 3: Build Student Directory Page (`/students`) & Profile Page (`/students/[id]`), Task 4: Build Server Action / API Route for Form Brief Lead Generator, Task 5: Build Admin CMS Dashboard (`/admin`), Task 6: Final Verification & Build Check
 
 ### Community 48 - "radio-group.tsx"
-Cohesion: 0.11
-Nodes (13): geist, inter, metadata, RootLayout(), viewport, env, db, sql (+5 more)
+Cohesion: 0.22
+Nodes (7): db, sql, briefs, news, projects, projectStudents, students
 
 ### Community 49 - "@base-ui/react"
 Cohesion: 0.43
 Nodes (5): ToggleGroup(), ToggleGroupContext, ToggleGroupItem(), Toggle(), toggleVariants
 
+### Community 72 - "app/layout.tsx"
+Cohesion: 0.33
+Nodes (5): geist, inter, metadata, RootLayout(), viewport
+
 ### Community 74 - "popover.tsx"
 Cohesion: 0.25
 Nodes (4): PopoverContent(), PopoverDescription(), PopoverHeader(), PopoverTitle()
+
+### Community 75 - "native-select.tsx"
+Cohesion: 0.40
+Nodes (4): NativeSelect(), NativeSelectOptGroup(), NativeSelectOption(), NativeSelectProps
 
 ### Community 82 - "Global Constraints"
 Cohesion: 0.29
@@ -278,21 +315,21 @@ Nodes (5): Next.js, SEO, and shadcn/ui Optimization Implementation Plan, Task 1:
 ## Knowledge Gaps
 - **190 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `BriefItem`, `mockBriefs`, `inter` (+185 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **30 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **32 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `alert-dialog.tsx` to `Core Runtime Dependencies`, `Next.js App Components`, `Package Manager Configuration`, `TypeScript Inclusions & Exclusions`, `Tailwind CSS Styling Rules`, `menubar.tsx`, `context-menu.tsx`, `dropdown-menu.tsx`, `page.tsx`, `attachment.tsx`, `drawer.tsx`, `navigation-menu.tsx`, `pagination.tsx`, `button.tsx`, `empty.tsx`, `avatar.tsx`, `bubble.tsx`, `message.tsx`, `message-scroller.tsx`, `alert.tsx`, `tabs.tsx`, `marker.tsx`, `radio-group.tsx`, `@base-ui/react`, `popover.tsx`, `resizable.tsx`?**
-  _High betweenness centrality (0.503) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `dependencies` to `Core Runtime Dependencies`, `Development Tooling & Types`, `cn`, `class-variance-authority`, `clsx`, `date-fns`, `dotenv`, `drizzle-orm`, `embla-carousel-react`, `input-otp`, `lucide-react`, `@neondatabase/serverless`, `next`, `next-themes`, `react-day-picker`, `react-dom`, `react-resizable-panels`, `recharts`, `shadcn`, `@shadcn/react`, `sonner`, `tailwind-merge`, `vaul`, `cmdk`?**
-  _High betweenness centrality (0.171) - this node is a cross-community bridge._
+- **Why does `cn()` connect `cn` to `Core Runtime Dependencies`, `Next.js App Components`, `Package Manager Configuration`, `TypeScript Inclusions & Exclusions`, `Tailwind CSS Styling Rules`, `menubar.tsx`, `context-menu.tsx`, `dropdown-menu.tsx`, `page.tsx`, `alert-dialog.tsx`, `attachment.tsx`, `drawer.tsx`, `navigation-menu.tsx`, `pagination.tsx`, `table.tsx`, `button.tsx`, `card.tsx`, `empty.tsx`, `avatar.tsx`, `bubble.tsx`, `message.tsx`, `message-scroller.tsx`, `alert.tsx`, `tabs.tsx`, `button-group.tsx`, `marker.tsx`, `message.tsx`, `@base-ui/react`, `app/layout.tsx`, `popover.tsx`, `native-select.tsx`, `hover-card.tsx`, `badge.tsx`, `resizable.tsx`?**
+  _High betweenness centrality (0.481) - this node is a cross-community bridge._
+- **Why does `dependencies` connect `dependencies` to `Core Runtime Dependencies`, `Development Tooling & Types`, `class-variance-authority`, `clsx`, `date-fns`, `dotenv`, `drizzle-orm`, `embla-carousel-react`, `input-otp`, `lucide-react`, `@neondatabase/serverless`, `next`, `next-themes`, `react-day-picker`, `react-dom`, `react-resizable-panels`, `recharts`, `shadcn`, `@shadcn/react`, `sonner`, `tailwind-merge`, `vaul`, `tw-animate-css`, `cmdk`?**
+  _High betweenness centrality (0.167) - this node is a cross-community bridge._
 - **Why does `react` connect `Core Runtime Dependencies` to `@base-ui/react`, `Package Manager Configuration`, `TypeScript Inclusions & Exclusions`, `dependencies`?**
-  _High betweenness centrality (0.170) - this node is a cross-community bridge._
+  _High betweenness centrality (0.166) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `BriefItem` to the rest of the system?**
   _190 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Core Runtime Dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.06341463414634146 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06155632984901278 - nodes in this community are weakly interconnected._
 - **Should `Development Tooling & Types` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
 - **Should `TypeScript Compiler Configuration` be split into smaller, more focused modules?**
