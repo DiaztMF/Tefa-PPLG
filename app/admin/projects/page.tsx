@@ -7,11 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Trash2, Users, CheckCircle2, Globe, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, Users, CheckCircle2, Globe, UploadCloud, Loader2, Image as ImageIcon } from "lucide-react";
 
 export default function AdminProjectsPage() {
   const [projectList, setProjectList] = useState<ProjectMock[]>(mockProjects);
   const [isAdding, setIsAdding] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadStatusMsg, setUploadStatusMsg] = useState("");
+
   const [newProject, setNewProject] = useState({
     title: "",
     category: "Web Application",
@@ -23,6 +26,38 @@ export default function AdminProjectsPage() {
 
   const [selectedStudentIds, setSelectedStudentIds] = useState<string[]>([]);
   const [studentRoles, setStudentRoles] = useState<Record<string, string>>({});
+
+  const handleFileUploadToR2 = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    setUploadStatusMsg("Mengunggah ke Cloudflare R2...");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (data.success && data.url) {
+        setNewProject((prev) => ({ ...prev, imageUrl: data.url }));
+        setUploadStatusMsg(data.message || "Gambar berhasil diunggah!");
+      } else {
+        setUploadStatusMsg(data.error || "Gagal mengunggah gambar.");
+      }
+    } catch (err) {
+      console.error(err);
+      setUploadStatusMsg("Terjadi kesalahan koneksi saat upload.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleAddProject = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,6 +91,7 @@ export default function AdminProjectsPage() {
     setNewProject({ title: "", category: "Web Application", description: "", techStackStr: "", liveUrl: "", imageUrl: "" });
     setSelectedStudentIds([]);
     setStudentRoles({});
+    setUploadStatusMsg("");
   };
 
   const handleDelete = (id: string) => {
@@ -81,7 +117,7 @@ export default function AdminProjectsPage() {
             Manajemen Proyek Showcase
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground">
-            Tambah proyek baru, isi link deployment untuk preview otomatis, dan petakan multi-role siswa.
+            Tambah proyek baru, upload screenshot ke Cloudflare R2 atau isi link deployment preview.
           </p>
         </div>
 
@@ -126,35 +162,59 @@ export default function AdminProjectsPage() {
             </div>
           </div>
 
-          {/* Deployment & Image Preview Config */}
+          {/* Cloudflare R2 Upload & Preview Section */}
           <div className="p-4 rounded-lg bg-secondary/60 border border-border space-y-4">
-            <div className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-              <Globe className="w-4 h-4 text-primary" /> Fitur Preview Otomatis & Screenshot Link Deployment
+            <div className="text-xs font-semibold text-foreground flex items-center justify-between">
+              <span className="flex items-center gap-1.5">
+                <UploadCloud className="w-4 h-4 text-primary" /> Upload Screenshot (Cloudflare R2) & Preview Configuration
+              </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="space-y-1.5">
-                <Label className="text-xs font-medium">Link Deployment Website (Auto Preview Screenshot) *</Label>
+              
+              {/* Cloudflare R2 File Upload Widget */}
+              <div className="space-y-2">
+                <Label className="text-xs font-medium">Upload File Gambar (Cloudflare R2 Direct Upload)</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    disabled={isUploading}
+                    onChange={handleFileUploadToR2}
+                    className="bg-background text-xs cursor-pointer"
+                  />
+                  {isUploading && <Loader2 className="w-4 h-4 animate-spin text-primary shrink-0" />}
+                </div>
+                {uploadStatusMsg && (
+                  <p className="text-[11px] text-primary font-medium">{uploadStatusMsg}</p>
+                )}
+              </div>
+
+              {/* Deployment URL Fallback */}
+              <div className="space-y-2">
+                <Label className="text-xs font-medium">Link Deployment Website (Fallback Auto Screenshot)</Label>
                 <Input
                   type="url"
                   placeholder="https://proyek-umkm.vercel.app"
                   value={newProject.liveUrl}
                   onChange={(e) => setNewProject({ ...newProject, liveUrl: e.target.value })}
                 />
-                <p className="text-[11px] text-muted-foreground">Jika diisi, sistem akan otomatis menggenerasi screenshot preview website!</p>
+                <p className="text-[11px] text-muted-foreground">Jika file gambar tidak diupload, sistem akan otomatis men-capture link deployment ini!</p>
               </div>
 
-              <div className="space-y-1.5">
-                <Label className="text-xs font-medium">URL Custom Screenshot Image (Opsional)</Label>
-                <Input
-                  type="url"
-                  placeholder="https://example.com/screenshot.png"
-                  value={newProject.imageUrl}
-                  onChange={(e) => setNewProject({ ...newProject, imageUrl: e.target.value })}
-                />
-                <p className="text-[11px] text-muted-foreground">Isi jika ingin menimpa (override) preview screenshot bawaan.</p>
-              </div>
             </div>
+
+            {/* Generated Image URL Result */}
+            {newProject.imageUrl && (
+              <div className="p-3 rounded bg-background border border-border text-xs flex items-center justify-between gap-3">
+                <div className="truncate text-muted-foreground">
+                  <strong>R2 Result URL:</strong> {newProject.imageUrl}
+                </div>
+                <span className="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-medium shrink-0">
+                  Ready
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -228,7 +288,7 @@ export default function AdminProjectsPage() {
             <Button type="button" variant="outline" onClick={() => setIsAdding(false)}>
               Batal
             </Button>
-            <Button type="submit" className="bg-primary text-primary-foreground">
+            <Button type="submit" className="bg-primary text-primary-foreground" disabled={isUploading}>
               Simpan Proyek Baru
             </Button>
           </div>
@@ -253,6 +313,11 @@ export default function AdminProjectsPage() {
                   </span>
                 </div>
                 <p className="text-muted-foreground">{proj.description}</p>
+                {proj.imageUrl && (
+                  <div className="text-[11px] text-primary flex items-center gap-1 font-mono">
+                    <ImageIcon className="w-3 h-3" /> Image: {proj.imageUrl}
+                  </div>
+                )}
                 {proj.liveUrl && (
                   <div className="text-[11px] text-emerald-600 flex items-center gap-1 font-mono">
                     <Globe className="w-3 h-3" /> {proj.liveUrl} (Auto Preview Active)

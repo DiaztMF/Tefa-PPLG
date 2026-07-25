@@ -115,8 +115,8 @@
     "semantic_hash": ""
   },
   "components/landing/showcase-highlight.tsx": {
-    "mtime": 1784962793.652677,
-    "ast_hash": "0c6d2b9a28c641b5b7f7b3a0fe9781c5",
+    "mtime": 1784963547.109757,
+    "ast_hash": "64030bc042a411e67998fc821c8c4384",
     "semantic_hash": ""
   },
   "components/ui/accordion.tsx": {
@@ -460,8 +460,8 @@
     "semantic_hash": ""
   },
   "app/admin/projects/page.tsx": {
-    "mtime": 1784962418.6285846,
-    "ast_hash": "17264048b7218c6c515f3d3fede0c357",
+    "mtime": 1784963564.1197567,
+    "ast_hash": "40183754defbb0629a9bc96bada21c7c",
     "semantic_hash": ""
   },
   "app/admin/students/page.tsx": {
@@ -475,13 +475,13 @@
     "semantic_hash": ""
   },
   "app/showcase/[id]/page.tsx": {
-    "mtime": 1784962449.1825974,
-    "ast_hash": "771c24a957c3a465efafecaf224eb0db",
+    "mtime": 1784963558.7006087,
+    "ast_hash": "0d635c21fe641c532d1bb7be86c219ab",
     "semantic_hash": ""
   },
   "app/showcase/page.tsx": {
-    "mtime": 1784962380.247782,
-    "ast_hash": "0afd81068eb87d9ce16b41df45f6ef2b",
+    "mtime": 1784963552.8156016,
+    "ast_hash": "423e8849be493bb99ad6ecb02c97a5a4",
     "semantic_hash": ""
   },
   "app/students/[id]/page.tsx": {
@@ -495,8 +495,8 @@
     "semantic_hash": ""
   },
   "lib/data/mock-data.ts": {
-    "mtime": 1784962364.4597373,
-    "ast_hash": "1d8288771f241e8b23a8aaa11251892d",
+    "mtime": 1784963571.3798318,
+    "ast_hash": "242a76c90961812a7e5ff2e7909e809c",
     "semantic_hash": ""
   },
   "lib/db/index.ts": {
@@ -552,6 +552,11 @@
   "docs/superpowers/plans/2026-07-25-nextjs-seo-and-shadcn-audit.md": {
     "mtime": 1784962763.9755368,
     "ast_hash": "72c86feea008de5cf9bfd8d9ca0fcb6a",
+    "semantic_hash": ""
+  },
+  "lib/utils/preview-image.ts": {
+    "mtime": 1784963541.850244,
+    "ast_hash": "de0e1d78ef8a16f744e06b457cce1128",
     "semantic_hash": ""
   }
 }
