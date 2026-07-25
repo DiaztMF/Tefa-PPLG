@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { mockProjects, mockStudents } from "@/lib/data/mock-data";
+import { env } from "@/lib/config/env";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://tefa.smk.sch.id";
+  const baseUrl = env.appUrl;
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {

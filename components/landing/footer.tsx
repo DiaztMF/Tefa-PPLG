@@ -16,11 +16,11 @@ export function Footer() {
                 <Code2 className="w-4 h-4" />
               </div>
               <span className="font-heading font-bold text-lg text-foreground tracking-tight">
-                TeFa PPLG <span className="text-primary">SMK</span>
+                TeFa PPLG <span className="text-primary">SMKN 2 Surakarta</span>
               </span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
-              Teaching Factory Pengembangan Perangkat Lunak & Gim. Platform showcase karya portofolio siswa dan pusat layanan jasa pembuatan perangkat lunak terpercaya.
+              Teaching Factory Pengembangan Perangkat Lunak & Gim SMK Negeri 2 Surakarta. Platform showcase karya portofolio siswa dan pusat layanan jasa pembuatan perangkat lunak terpercaya.
             </p>
           </div>
 
@@ -41,11 +41,11 @@ export function Footer() {
             <div className="flex flex-col gap-2.5 text-xs text-muted-foreground">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                <span>Gedung Lab PPLG SMK Negeri — Studio Teaching Factory</span>
+                <span>Gedung Lab PPLG SMK Negeri 2 Surakarta — Studio Teaching Factory</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-primary shrink-0" />
-                <span>tefa.pplg@smk.sch.id</span>
+                <span>tefa.pplg@smkn2surakarta.sch.id</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-primary shrink-0" />
@@ -58,7 +58,7 @@ export function Footer() {
 
         <div className="pt-8 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <div>
-            © {new Date().getFullYear()} Teaching Factory PPLG SMK. Hak Cipta Dilindungi Undang-Undang.
+            © {new Date().getFullYear()} Teaching Factory PPLG SMK Negeri 2 Surakarta. Hak Cipta Dilindungi Undang-Undang.
           </div>
           <div className="flex items-center gap-4">
             <span className="hover:text-foreground cursor-pointer">Kebijakan Privasi</span>

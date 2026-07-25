@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
+import { env } from "@/lib/config/env";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://tefa.smk.sch.id";
-
   return {
     rules: [
       {
@@ -11,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin/", "/api/"],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${env.appUrl}/sitemap.xml`,
   };
 }

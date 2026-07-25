@@ -16,17 +16,17 @@ export function HeroSection({ onOpenBriefModal }: HeroSectionProps) {
         {/* Eyebrow Pill */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-secondary border border-primary/20 text-primary text-xs font-medium">
           <Sparkles className="w-3.5 h-3.5" />
-          <span>Teaching Factory PPLG SMK — Production Studio</span>
+          <span>Teaching Factory PPLG — SMK Negeri 2 Surakarta</span>
         </div>
 
         {/* Display Headline */}
         <h1 className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl text-foreground tracking-tight leading-[1.1]">
-          Solusi Perangkat Lunak Industri Karya <span className="text-primary">Talenta Muda PPLG</span>
+          Solusi Perangkat Lunak Industri Karya <span className="text-primary">Talenta SMKN 2 Surakarta</span>
         </h1>
 
         {/* Lead Subtext */}
         <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-          Platform showcase portofolio dan pemesanan jasa pengembangan software resmi. Dikerjakan oleh siswa berbakat dalam pengawasan profesional instruktur industri.
+          Platform showcase portofolio dan pemesanan jasa pengembangan software resmi TeFa PPLG SMKN 2 Surakarta. Dikerjakan oleh siswa berbakat dalam pengawasan profesional instruktur industri.
         </p>
 
         {/* Dual CTAs */}

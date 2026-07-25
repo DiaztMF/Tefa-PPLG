@@ -10,8 +10,8 @@
     "semantic_hash": "b33d000860642c6f4907a877e0387a21"
   },
   "app/layout.tsx": {
-    "mtime": 1784962777.8328288,
-    "ast_hash": "e5f427c9d6fdd05cd1eb5873bf340cb2",
+    "mtime": 1784962962.910994,
+    "ast_hash": "746b529746487f9cec0d883225c94634",
     "semantic_hash": ""
   },
   "app/page.tsx": {
@@ -100,13 +100,13 @@
     "semantic_hash": ""
   },
   "components/landing/footer.tsx": {
-    "mtime": 1784962803.5462182,
-    "ast_hash": "de946fecb03f3acb7b128ccd3a8d56b2",
+    "mtime": 1784962987.4459236,
+    "ast_hash": "e1b39d3e445af3dfde604eab8f4dd8c5",
     "semantic_hash": ""
   },
   "components/landing/hero-section.tsx": {
-    "mtime": 1784962782.6086528,
-    "ast_hash": "2e822d7143029d6fd0c16ad114e540a7",
+    "mtime": 1784962982.5670748,
+    "ast_hash": "68cb469989af9fbebd4ef31517aab78b",
     "semantic_hash": ""
   },
   "components/landing/navbar.tsx": {
@@ -470,8 +470,8 @@
     "semantic_hash": ""
   },
   "app/api/brief/route.ts": {
-    "mtime": 1784962401.99044,
-    "ast_hash": "f488e19937f1303f908134fe724932a2",
+    "mtime": 1784962973.785082,
+    "ast_hash": "62c539ac027344c121034917f7c77f44",
     "semantic_hash": ""
   },
   "app/showcase/[id]/page.tsx": {
@@ -500,8 +500,8 @@
     "semantic_hash": ""
   },
   "lib/db/index.ts": {
-    "mtime": 1784962358.3467207,
-    "ast_hash": "a8400f66368e7dd436da2f650ee700c6",
+    "mtime": 1784962999.7517893,
+    "ast_hash": "ce6b39fcc60c5f79f72d62d4af8667f4",
     "semantic_hash": ""
   },
   "lib/db/schema.ts": {
@@ -520,13 +520,13 @@
     "semantic_hash": ""
   },
   "app/robots.ts": {
-    "mtime": 1784962768.374961,
-    "ast_hash": "e269382120ff3fd1c1ca93110adda9c6",
+    "mtime": 1784962966.5032456,
+    "ast_hash": "029837959dcab55aa2a9345d515fc59c",
     "semantic_hash": ""
   },
   "app/sitemap.ts": {
-    "mtime": 1784962773.4033008,
-    "ast_hash": "625dfbc7403244403b643921243069ad",
+    "mtime": 1784962970.210445,
+    "ast_hash": "b3bf81487046d84d8e3441aab1cfd7a6",
     "semantic_hash": ""
   },
   "tests/api-brief.test.ts": {
@@ -552,6 +552,11 @@
   "docs/superpowers/plans/2026-07-25-nextjs-seo-and-shadcn-audit.md": {
     "mtime": 1784962763.9755368,
     "ast_hash": "72c86feea008de5cf9bfd8d9ca0fcb6a",
+    "semantic_hash": ""
+  },
+  "lib/config/env.ts": {
+    "mtime": 1784962958.426762,
+    "ast_hash": "1b8c58f3c534bf8f1d1a4074d507fe06",
     "semantic_hash": ""
   }
 }
