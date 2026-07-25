@@ -1,16 +1,16 @@
 # Graph Report - Tefa  (2026-07-25)
 
 ## Corpus Check
-- 88 files · ~24,229 words
+- 103 files · ~32,646 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 674 nodes · 1127 edges · 74 communities (43 shown, 31 thin omitted)
+- 724 nodes · 1252 edges · 82 communities (50 shown, 32 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 1 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7980b761`
+- Built from commit: `ae3195d0`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -85,18 +85,24 @@
 - tailwind-merge
 - tw-animate-css
 - vaul
+- popover.tsx
+- button-group.tsx
+- app/layout.tsx
+- hover-card.tsx
+- resizable.tsx
+- badge.tsx
 
 ## God Nodes (most connected - your core abstractions)
 1. `cn()` - 330 edges
-2. `Button()` - 17 edges
+2. `Button()` - 25 edges
 3. `react` - 17 edges
 4. `compilerOptions` - 16 edges
-5. `include` - 8 edges
-6. `TeFa PPLG Design System Specification` - 8 edges
-7. `Global Constraints` - 8 edges
-8. `scripts` - 7 edges
-9. `Product Requirement Document (PRD)` - 7 edges
-10. `tailwind` - 6 edges
+5. `Input()` - 9 edges
+6. `include` - 8 edges
+7. `TeFa PPLG Design System Specification` - 8 edges
+8. `Global Constraints` - 8 edges
+9. `calculateStudentClass()` - 7 edges
+10. `scripts` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `RootLayout()` --calls--> `cn()`  [EXTRACTED]
@@ -113,11 +119,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (74 total, 31 thin omitted)
+## Communities (82 total, 32 thin omitted)
 
 ### Community 0 - "Core Runtime Dependencies"
-Cohesion: 0.06
-Nodes (34): ThemeHotkey(), CalendarDayButton(), Carousel(), CarouselApi, CarouselContent(), CarouselContext, CarouselContextProps, CarouselItem() (+26 more)
+Cohesion: 0.07
+Nodes (25): ThemeHotkey(), ChartConfig, ChartContainer(), ChartContext, ChartContextProps, ChartLegendContent(), ChartTooltipContent(), getPayloadConfigFromPayload() (+17 more)
 
 ### Community 1 - "Development Tooling & Types"
 Cohesion: 0.06
@@ -132,28 +138,28 @@ Cohesion: 0.09
 Nodes (21): aliases, components, hooks, lib, ui, utils, iconLibrary, menuAccent (+13 more)
 
 ### Community 4 - "Next.js App Components"
-Cohesion: 0.06
-Nodes (22): geist, inter, metadata, RootLayout(), Badge(), badgeVariants, Checkbox(), HoverCardContent() (+14 more)
+Cohesion: 0.22
+Nodes (4): Checkbox(), Progress(), Spinner(), Switch()
 
 ### Community 5 - "Package Manager Configuration"
 Cohesion: 0.06
 Nodes (38): Sheet(), SheetContent(), SheetDescription(), SheetFooter(), SheetHeader(), SheetOverlay(), SheetTitle(), Sidebar() (+30 more)
 
 ### Community 6 - "TypeScript Inclusions & Exclusions"
-Cohesion: 0.07
-Nodes (35): BriefModalProps, Command(), CommandDialog(), CommandEmpty(), CommandGroup(), CommandInput(), CommandItem(), CommandList() (+27 more)
+Cohesion: 0.06
+Nodes (48): BriefItem, mockBriefs, AdminStudentsPage(), PageProps, PageProps, StudentProfilePage(), StudentsDirectoryPage(), BentoServices() (+40 more)
 
 ### Community 7 - "Tailwind CSS Styling Rules"
-Cohesion: 0.07
-Nodes (29): ButtonGroup(), ButtonGroupSeparator(), ButtonGroupText(), buttonGroupVariants, Field(), FieldContent(), FieldDescription(), FieldError() (+21 more)
+Cohesion: 0.18
+Nodes (12): Item(), ItemActions(), ItemContent(), ItemDescription(), ItemFooter(), ItemGroup(), ItemHeader(), ItemMedia() (+4 more)
 
 ### Community 8 - "Graphify Rule System"
 Cohesion: 0.67
 Nodes (3): Graphify Knowledge Graph Rule, Graphify Workflow Definition, Agents Graphify Integration Rules
 
 ### Community 16 - "cn"
-Cohesion: 0.12
-Nodes (25): Breadcrumb(), BreadcrumbEllipsis(), BreadcrumbItem(), BreadcrumbLink(), BreadcrumbList(), BreadcrumbPage(), BreadcrumbSeparator(), ComboboxChip() (+17 more)
+Cohesion: 0.10
+Nodes (21): ComboboxChip(), ComboboxChips(), ComboboxChipsInput(), ComboboxClear(), ComboboxContent(), ComboboxEmpty(), ComboboxGroup(), ComboboxInput() (+13 more)
 
 ### Community 17 - "TeFa PPLG Design System Specification"
 Cohesion: 0.10
@@ -172,8 +178,8 @@ Cohesion: 0.12
 Nodes (9): DropdownMenuCheckboxItem(), DropdownMenuContent(), DropdownMenuItem(), DropdownMenuLabel(), DropdownMenuRadioItem(), DropdownMenuSeparator(), DropdownMenuShortcut(), DropdownMenuSubContent() (+1 more)
 
 ### Community 21 - "page.tsx"
-Cohesion: 0.17
-Nodes (9): BentoServices(), services, BriefModal(), Footer(), Navbar(), NavbarProps, highlightProjects, ShowcaseHighlight() (+1 more)
+Cohesion: 0.20
+Nodes (13): Carousel(), CarouselApi, CarouselContent(), CarouselContext, CarouselContextProps, CarouselItem(), CarouselNext(), CarouselOptions (+5 more)
 
 ### Community 22 - "alert-dialog.tsx"
 Cohesion: 0.15
@@ -204,12 +210,12 @@ Cohesion: 0.22
 Nodes (7): Pagination(), PaginationContent(), PaginationEllipsis(), PaginationLink(), PaginationLinkProps, PaginationNext(), PaginationPrevious()
 
 ### Community 29 - "table.tsx"
-Cohesion: 0.22
-Nodes (8): Table(), TableBody(), TableCaption(), TableCell(), TableFooter(), TableHead(), TableHeader(), TableRow()
+Cohesion: 0.11
+Nodes (28): Breadcrumb(), BreadcrumbEllipsis(), BreadcrumbItem(), BreadcrumbLink(), BreadcrumbList(), BreadcrumbPage(), BreadcrumbSeparator(), Kbd() (+20 more)
 
 ### Community 30 - "button.tsx"
-Cohesion: 0.43
-Nodes (5): HeroSection(), HeroSectionProps, Button(), buttonVariants, Calendar()
+Cohesion: 0.18
+Nodes (11): Field(), FieldContent(), FieldDescription(), FieldError(), FieldGroup(), FieldLabel(), FieldLegend(), FieldSeparator() (+3 more)
 
 ### Community 31 - "card.tsx"
 Cohesion: 0.25
@@ -232,8 +238,8 @@ Cohesion: 0.38
 Nodes (6): Bubble(), BubbleContent(), BubbleGroup(), BubbleReactions(), bubbleReactionsVariants, bubbleVariants
 
 ### Community 36 - "message.tsx"
-Cohesion: 0.29
-Nodes (6): Message(), MessageAvatar(), MessageContent(), MessageFooter(), MessageGroup(), MessageHeader()
+Cohesion: 0.18
+Nodes (10): Command(), CommandDialog(), CommandEmpty(), CommandGroup(), CommandInput(), CommandItem(), CommandList(), CommandSeparator() (+2 more)
 
 ### Community 37 - "message-scroller.tsx"
 Cohesion: 0.29
@@ -271,24 +277,44 @@ Nodes (4): Global Constraints, Task 1: CSS Design Tokens & Light Mode Clean-Up, 
 Cohesion: 0.50
 Nodes (3): plugin, $schema, .opencode/plugins/graphify.js
 
+### Community 47 - "kbd.tsx"
+Cohesion: 0.22
+Nodes (8): Global Constraints, Master TeFa Portal V1 Implementation Plan, Task 1: Database Schema & Utilities (`lib/db/schema.ts` & `lib/utils/student-class.ts`), Task 2: Build Showcase Catalogue Page (`/showcase`) & Detail Page (`/showcase/[id]`), Task 3: Build Student Directory Page (`/students`) & Profile Page (`/students/[id]`), Task 4: Build Server Action / API Route for Form Brief Lead Generator, Task 5: Build Admin CMS Dashboard (`/admin`), Task 6: Final Verification & Build Check
+
+### Community 48 - "radio-group.tsx"
+Cohesion: 0.22
+Nodes (7): db, sql, briefs, news, projects, projectStudents, students
+
+### Community 74 - "popover.tsx"
+Cohesion: 0.25
+Nodes (4): PopoverContent(), PopoverDescription(), PopoverHeader(), PopoverTitle()
+
+### Community 75 - "button-group.tsx"
+Cohesion: 0.38
+Nodes (5): ButtonGroup(), ButtonGroupSeparator(), ButtonGroupText(), buttonGroupVariants, Separator()
+
+### Community 76 - "app/layout.tsx"
+Cohesion: 0.40
+Nodes (4): geist, inter, metadata, RootLayout()
+
 ## Knowledge Gaps
-- **164 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `inter`, `geist`, `metadata` (+159 more)
+- **182 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `BriefItem`, `mockBriefs`, `inter` (+177 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **31 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **32 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `cn()` connect `cn` to `Core Runtime Dependencies`, `Next.js App Components`, `Package Manager Configuration`, `TypeScript Inclusions & Exclusions`, `Tailwind CSS Styling Rules`, `menubar.tsx`, `context-menu.tsx`, `dropdown-menu.tsx`, `alert-dialog.tsx`, `attachment.tsx`, `drawer.tsx`, `navigation-menu.tsx`, `pagination.tsx`, `table.tsx`, `button.tsx`, `card.tsx`, `empty.tsx`, `avatar.tsx`, `bubble.tsx`, `message.tsx`, `message-scroller.tsx`, `alert.tsx`, `tabs.tsx`, `accordion.tsx`, `marker.tsx`, `native-select.tsx`, `kbd.tsx`, `radio-group.tsx`?**
-  _High betweenness centrality (0.538) - this node is a cross-community bridge._
+- **Why does `cn()` connect `table.tsx` to `Core Runtime Dependencies`, `Next.js App Components`, `Package Manager Configuration`, `TypeScript Inclusions & Exclusions`, `Tailwind CSS Styling Rules`, `cn`, `menubar.tsx`, `context-menu.tsx`, `dropdown-menu.tsx`, `page.tsx`, `alert-dialog.tsx`, `attachment.tsx`, `drawer.tsx`, `navigation-menu.tsx`, `pagination.tsx`, `button.tsx`, `card.tsx`, `empty.tsx`, `avatar.tsx`, `bubble.tsx`, `message.tsx`, `message-scroller.tsx`, `alert.tsx`, `tabs.tsx`, `accordion.tsx`, `marker.tsx`, `native-select.tsx`, `popover.tsx`, `button-group.tsx`, `app/layout.tsx`, `hover-card.tsx`, `resizable.tsx`, `badge.tsx`?**
+  _High betweenness centrality (0.502) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `dependencies` to `Core Runtime Dependencies`, `Development Tooling & Types`, `@base-ui/react`, `class-variance-authority`, `clsx`, `date-fns`, `dotenv`, `drizzle-orm`, `embla-carousel-react`, `input-otp`, `lucide-react`, `@neondatabase/serverless`, `next`, `next-themes`, `react-day-picker`, `react-dom`, `react-resizable-panels`, `recharts`, `shadcn`, `@shadcn/react`, `sonner`, `tailwind-merge`, `tw-animate-css`, `vaul`?**
-  _High betweenness centrality (0.185) - this node is a cross-community bridge._
-- **Why does `react` connect `Core Runtime Dependencies` to `dependencies`, `Next.js App Components`, `Package Manager Configuration`?**
-  _High betweenness centrality (0.184) - this node is a cross-community bridge._
-- **What connects `$schema`, `.opencode/plugins/graphify.js`, `inter` to the rest of the system?**
-  _164 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _High betweenness centrality (0.170) - this node is a cross-community bridge._
+- **Why does `react` connect `Core Runtime Dependencies` to `dependencies`, `Package Manager Configuration`, `page.tsx`, `TypeScript Inclusions & Exclusions`?**
+  _High betweenness centrality (0.169) - this node is a cross-community bridge._
+- **What connects `$schema`, `.opencode/plugins/graphify.js`, `BriefItem` to the rest of the system?**
+  _182 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Core Runtime Dependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.059800664451827246 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07226890756302522 - nodes in this community are weakly interconnected._
 - **Should `Development Tooling & Types` be split into smaller, more focused modules?**
   _Cohesion score 0.05555555555555555 - nodes in this community are weakly interconnected._
 - **Should `TypeScript Compiler Configuration` be split into smaller, more focused modules?**

@@ -72,5 +72,13 @@
   "70": "sonner",
   "71": "tailwind-merge",
   "72": "tw-animate-css",
-  "73": "vaul"
+  "73": "vaul",
+  "74": "popover.tsx",
+  "75": "button-group.tsx",
+  "76": "app/layout.tsx",
+  "77": "hover-card.tsx",
+  "78": "resizable.tsx",
+  "79": "badge.tsx",
+  "80": "admin/layout.tsx",
+  "81": "route.ts"
 }
