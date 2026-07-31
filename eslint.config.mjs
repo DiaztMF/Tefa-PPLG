@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "graphify-out/**",
+    ".agents/**",
+    ".opencode/**",
+    "node_modules/**",
   ]),
 ]);
 

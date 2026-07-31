@@ -76,7 +76,7 @@ export default function AdminProjectsPage() {
     const item: ProjectMock = {
       id: createdId,
       title: newProject.title,
-      category: newProject.category as any,
+      category: newProject.category as ProjectMock["category"],
       description: newProject.description,
       longDescription: newProject.description,
       techStack: techStack.length > 0 ? techStack : ["Next.js", "TypeScript"],

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Code2, MapPin, Mail, Phone } from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
+import { Logo } from "@/components/logo";
 
 export function Footer() {
   return (
@@ -11,14 +12,7 @@ export function Footer() {
           
           {/* Brand Col */}
           <div className="md:col-span-2 flex flex-col gap-4">
-            <Link href="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-heading font-bold text-sm shadow-sm">
-                <Code2 className="w-4 h-4" />
-              </div>
-              <span className="font-heading font-bold text-lg text-foreground tracking-tight">
-                TeFa PPLG <span className="text-primary">SMKN 2 Surakarta</span>
-              </span>
-            </Link>
+            <Logo href="/" size={36} showText subtitle="SMKN 2 Surakarta" />
             <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
               Teaching Factory Pengembangan Perangkat Lunak & Gim SMK Negeri 2 Surakarta. Platform showcase karya portofolio siswa dan pusat layanan jasa pembuatan perangkat lunak terpercaya.
             </p>

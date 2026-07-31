@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 test("Brief API Logic - Validation rules for empty fields", () => {
-  const validateBriefPayload = (payload: any) => {
+  const validateBriefPayload = (payload: { name?: string; whatsapp?: string; brief?: string }) => {
     if (!payload.name || !payload.whatsapp || !payload.brief) {
       return { valid: false, error: "Nama, No. WhatsApp, dan Brief wajib diisi." };
     }
