@@ -32,8 +32,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const id = `news-${Date.now()}`;
-    const slug = `${toSlug(String(title))}-${Date.now().toString().slice(-4)}`;
+    const id = `news-${crypto.randomUUID()}`;
+    const slug = `${toSlug(String(title))}-${crypto.randomUUID().slice(0, 8)}`;
     const authorName = author ? String(author).trim() : "Admin TeFa PPLG";
 
     if (isDatabaseConfigured()) {

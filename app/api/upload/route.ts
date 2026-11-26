@@ -13,14 +13,12 @@ const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
 
 export async function POST(request: NextRequest) {
   try {
-    if (isDatabaseConfigured()) {
-      const session = await auth.api.getSession({ headers: request.headers });
-      if (!session) {
-        return NextResponse.json(
-          { error: "Unauthorized. Silakan login terlebih dahulu." },
-          { status: 401 }
-        );
-      }
+    const session = await auth.api.getSession({ headers: request.headers });
+    if (!session) {
+      return NextResponse.json(
+        { error: "Unauthorized. Silakan login terlebih dahulu." },
+        { status: 401 }
+      );
     }
 
     const formData = await request.formData();

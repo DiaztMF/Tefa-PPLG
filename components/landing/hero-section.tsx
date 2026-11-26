@@ -156,10 +156,6 @@ export function HeroSection({ onOpenBriefModal }: HeroSectionProps) {
                 </motion.div>
               ))}
             </div>
-            {/* Subtle divider lines between stats */}
-            <div className="hidden sm:block absolute left-1/2 top-1/4 bottom-1/4 w-px bg-primary/20 -translate-x-1/2" aria-hidden="true" />
-            <div className="hidden sm:block absolute left-1/4 top-1/4 bottom-1/4 w-px bg-primary/20" aria-hidden="true" />
-            <div className="hidden sm:block absolute left-3/4 top-1/4 bottom-1/4 w-px bg-primary/20" aria-hidden="true" />
           </div>
         </motion.div>
       </motion.div>

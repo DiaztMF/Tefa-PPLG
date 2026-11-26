@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const briefId = `brief-${Date.now()}`;
+    const briefId = `brief-${crypto.randomUUID()}`;
     const targetNumber =
       process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6281234567890";
     const schoolName =

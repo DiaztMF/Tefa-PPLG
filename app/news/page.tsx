@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getNews } from "@/lib/db/queries";
-import { Logo } from "@/components/logo";
+import { Navbar } from "@/components/landing/navbar";
 import { ArrowLeft, Calendar, Newspaper, User, ArrowRight } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -17,31 +17,7 @@ export default async function NewsListPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col antialiased">
-      <header className="w-full h-[72px] bg-card border-b border-border sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <Logo href="/" size={40} showText subtitle="SMK Showcase" />
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-            <Link href="/" className="hover:text-primary transition-colors">
-              Beranda
-            </Link>
-            <Link
-              href="/showcase"
-              className="hover:text-primary transition-colors"
-            >
-              Showcase Proyek
-            </Link>
-            <Link
-              href="/students"
-              className="hover:text-primary transition-colors"
-            >
-              Direktori Siswa
-            </Link>
-            <Link href="/news" className="text-primary font-semibold">
-              Berita
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="flex-1 py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
