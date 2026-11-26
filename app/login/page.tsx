@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
@@ -11,6 +11,31 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ArrowLeft, Lock, Loader2, AlertCircle } from "lucide-react";
 
+const loginRateLimit = new Map<string, number[]>();
+const LOGIN_RATE_LIMIT_WINDOW = 60 * 1000; // 1 menit
+const LOGIN_RATE_LIMIT_MAX = 5; // maksimal 5 percobaan per menit per IP
+
+function getClientIp(): string {
+  // Client-side tidak dapat membaca IP langsung; gunakan placeholder unik per sesi
+  // Rate limit aktual harus dilakukan di sisi server (middleware atau API route)
+  return "client";
+}
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const timestamps = loginRateLimit.get(ip) || [];
+  const recent = timestamps.filter((t) => now - t < LOGIN_RATE_LIMIT_WINDOW);
+  loginRateLimit.set(ip, recent);
+  return recent.length >= LOGIN_RATE_LIMIT_MAX;
+}
+
+function recordLoginAttempt(ip: string): void {
+  const now = Date.now();
+  const timestamps = loginRateLimit.get(ip) || [];
+  timestamps.push(now);
+  loginRateLimit.set(ip, timestamps);
+}
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -20,11 +45,23 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [rateLimitMsg, setRateLimitMsg] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
+    setRateLimitMsg("");
     setIsLoading(true);
+
+    const ip = getClientIp();
+    if (isRateLimited(ip)) {
+      setRateLimitMsg(
+        "Terlalu banyak percobaan login. Coba lagi dalam 1 menit."
+      );
+      setIsLoading(false);
+      return;
+    }
+    recordLoginAttempt(ip);
 
     try {
       const { error } = await authClient.signIn.email({
@@ -34,9 +71,7 @@ function LoginForm() {
       });
 
       if (error) {
-        setErrorMessage(
-          error.message || "Email atau kata sandi tidak valid."
-        );
+        setErrorMessage(error.message || "Email atau kata sandi tidak valid.");
         return;
       }
 
@@ -75,6 +110,14 @@ function LoginForm() {
               <AlertCircle className="w-4 h-4 text-destructive" />
               <AlertDescription className="text-xs font-medium text-destructive">
                 {errorMessage}
+              </AlertDescription>
+            </Alert>
+          )}
+          {rateLimitMsg && (
+            <Alert variant="destructive" className="border-destructive bg-destructive/10 text-destructive">
+              <AlertCircle className="w-4 h-4 text-destructive" />
+              <AlertDescription className="text-xs font-medium text-destructive">
+                {rateLimitMsg}
               </AlertDescription>
             </Alert>
           )}
