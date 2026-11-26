@@ -1,4 +1,4 @@
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, lte } from "drizzle-orm";
 import { db, isDatabaseConfigured } from "@/lib/db";
 import {
   briefs,
@@ -356,8 +356,14 @@ export async function getStats(): Promise<{
   alumniCount: number;
 }> {
   if (!isDatabaseConfigured()) {
-    const currentYear = new Date().getFullYear();
-    const alumniThreshold = currentYear - 3;
+    const now = new Date();
+    const jakartaNow = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+    const currentYear = jakartaNow.getFullYear();
+    const currentMonth = jakartaNow.getMonth();
+    let alumniThreshold = currentYear - 3;
+    if (currentMonth < 6) {
+      alumniThreshold -= 1;
+    }
     return {
       projectsCount: mockProjects.length,
       studentsCount: mockStudents.length,
@@ -366,26 +372,41 @@ export async function getStats(): Promise<{
   }
 
   try {
-    const currentYear = new Date().getFullYear();
-    const alumniThreshold = currentYear - 3;
+    const now = new Date();
+    const jakartaNow = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+    const currentYear = jakartaNow.getFullYear();
+    const currentMonth = jakartaNow.getMonth();
+    let alumniThreshold = currentYear - 3;
+    if (currentMonth < 6) {
+      alumniThreshold -= 1;
+    }
 
     const [projectRows, studentRows] = await Promise.all([
       db.select({ count: projects.id }).from(projects),
-      db.select({ id: students.id, entryYear: students.entryYear }).from(students),
+      db
+        .select({ id: students.id, entryYear: students.entryYear })
+        .from(students)
+        .where(lte(students.entryYear, alumniThreshold)),
     ]);
 
     return {
       projectsCount: projectRows.length,
       studentsCount: studentRows.length,
-      alumniCount: studentRows.filter((s) => s.entryYear <= alumniThreshold).length,
+      alumniCount: studentRows.length,
     };
   } catch (err) {
     if (process.env.NODE_ENV === "production") {
       throw err;
     }
     console.warn("Fallback getStats ke mock data:", err);
-    const currentYear = new Date().getFullYear();
-    const alumniThreshold = currentYear - 3;
+    const now = new Date();
+    const jakartaNow = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+    const currentYear = jakartaNow.getFullYear();
+    const currentMonth = jakartaNow.getMonth();
+    let alumniThreshold = currentYear - 3;
+    if (currentMonth < 6) {
+      alumniThreshold -= 1;
+    }
     return {
       projectsCount: mockProjects.length,
       studentsCount: mockStudents.length,

@@ -12,8 +12,9 @@ export interface ClassStatusInfo {
  * - >3 Years (after July 1 entry_year+3): Alumni (Angkatan YYYY)
  */
 export function calculateStudentClass(entryYear: number, referenceDate: Date = new Date()): ClassStatusInfo {
-  const currentYear = referenceDate.getFullYear();
-  const currentMonth = referenceDate.getMonth(); // 0-indexed (6 = July)
+  const now = new Date(referenceDate.toLocaleString("en-US", { timeZone: "Asia/Jakarta" }));
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth(); // 0-indexed (6 = July)
 
   let academicYearIndex = currentYear - entryYear;
   if (currentMonth < 6) {
