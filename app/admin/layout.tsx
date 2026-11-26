@@ -51,7 +51,7 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-background text-foreground flex antialiased">
-      <aside className="w-64 bg-card border-r border-border p-6 hidden md:flex flex-col shrink-0 h-screen">
+      <aside className="fixed top-0 left-0 z-20 w-64 bg-card border-r border-border p-6 h-screen">
         <div className="flex flex-col h-full">
           <div className="space-y-8 flex-1 flex flex-col">
             <Link href="/admin" className="flex items-center gap-2.5">
@@ -100,7 +100,7 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="ml-64 flex-1 flex flex-col min-w-0">
         <header className="h-16 bg-card border-b border-border px-4 sm:px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Sheet>
