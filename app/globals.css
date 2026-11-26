@@ -44,6 +44,8 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --radius-lg: var(--radius);
@@ -72,3 +74,120 @@
   mask-image: radial-gradient(ellipse at center, black 60%, transparent 100%);
   -webkit-mask-image: radial-gradient(ellipse at center, black 60%, transparent 100%);
 }
+/* ============================================================
+  Motion-safe animation utilities
+  ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-stagger > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.animate-stagger > * {
+  animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.animate-stagger > *:nth-child(1)  { animation-delay: 0ms; }
+.animate-stagger > *:nth-child(2)  { animation-delay: 80ms; }
+.animate-stagger > *:nth-child(3)  { animation-delay: 160ms; }
+.animate-stagger > *:nth-child(4)  { animation-delay: 240ms; }
+.animate-stagger > *:nth-child(5)  { animation-delay: 320ms; }
+.animate-stagger > *:nth-child(6)  { animation-delay: 400ms; }
+.animate-stagger > *:nth-child(7)  { animation-delay: 480ms; }
+.animate-stagger > *:nth-child(8)  { animation-delay: 560ms; }
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   Refined shadow tokens (light-mode only)
+   ============================================================ */
+:root {
+  --shadow-soft: 0 2px 8px -2px rgba(15, 23, 42, 0.06), 0 4px 16px -4px rgba(15, 23, 42, 0.08);
+  --shadow-elevated: 0 8px 24px -4px rgba(15, 23, 42, 0.1), 0 16px 32px -8px rgba(15, 23, 42, 0.12);
+  --shadow-press: 0 1px 4px -1px rgba(15, 23, 42, 0.12), 0 2px 8px -2px rgba(15, 23, 42, 0.08);
+  --shadow-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 0 rgba(15, 23, 42, 0.04);
+}
+
+/* ============================================================
+   Hover elevation & press scale
+   ============================================================ */
+.hover-elevate {
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hover-elevate:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-elevated);
+}
+
+.press-scale {
+  transition: transform 0.08s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.08s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.press-scale:active:not(:disabled) {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-press);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-elevate,
+  .press-scale {
+    transition: none;
+  }
+  .hover-elevate:hover {
+    transform: none;
+    box-shadow: var(--shadow-soft);
+  }
+  .press-scale:active:not(:disabled) {
+    transform: none;
+    box-shadow: var(--shadow-soft);
+  }
+}
+
+/* ============================================================
+   Card utilities: double-bezel shell + core
+   ============================================================ */
+.card-shell {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft), var(--shadow-inner-highlight);
+  position: relative;
+}
+.card-shell::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(var(--radius) - 1px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+}
+
+.card-core {
+  background: var(--card);
+  border-radius: calc(var(--radius) - 2px);
+  padding: 1.5rem;
+}
+
+/* Background diversity tokens for bento grid */
+.bg-surface-1 { background: var(--background); }
+.bg-surface-2 { background: var(--muted); }
+.bg-surface-3 { background: var(--secondary); }
+.bg-surface-4 { background: color-mix(in srgb, var(--primary) 6%, transparent); }
+.bg-surface-5 { background: color-mix(in srgb, var(--accent) 8%, transparent); }
