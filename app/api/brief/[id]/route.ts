@@ -2,26 +2,52 @@ import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db, isDatabaseConfigured } from "@/lib/db";
 import { briefs } from "@/lib/db/schema";
-import { requireAdminSession } from "@/lib/auth-guard";
 
-interface RouteContext {
-  params: Promise<{ id: string }>;
-}
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
 
-export async function DELETE(request: NextRequest, context: RouteContext) {
-  const unauthorized = await requireAdminSession(request);
-  if (unauthorized) return unauthorized;
+  if (!isDatabaseConfigured()) {
+    return NextResponse.json(
+      { error: "Database belum dikonfigurasi." },
+      { status: 503 }
+    );
+  }
 
   try {
-    const { id } = await context.params;
-    if (isDatabaseConfigured()) {
-      await db.delete(briefs).where(eq(briefs.id, id));
+    const [brief] = await db
+      .select()
+      .from(briefs)
+      .where(eq(briefs.id, id))
+      .limit(1);
+
+    if (!brief) {
+      return NextResponse.json(
+        { error: "Brief tidak ditemukan." },
+        { status: 404 }
+      );
     }
-    return NextResponse.json({ success: true, id });
+
+    return NextResponse.json({
+      success: true,
+      brief: {
+        id: brief.id,
+        name: brief.name,
+        org: brief.org,
+        whatsapp: brief.whatsapp,
+        service: brief.service,
+        budget: brief.budget,
+        briefText: brief.briefText,
+        status: brief.status,
+        createdAt: brief.createdAt.toISOString().split("T")[0],
+      },
+    });
   } catch (err) {
-    console.error("DELETE /api/brief/[id] error:", err);
+    console.error("GET /api/brief/[id] error:", err);
     return NextResponse.json(
-      { error: "Gagal menghapus brief." },
+      { error: "Gagal memuat detail brief." },
       { status: 500 }
     );
   }
