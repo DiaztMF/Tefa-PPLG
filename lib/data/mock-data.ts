@@ -32,7 +32,7 @@ export const mockStudents: StudentMock[] = [
   {
     id: "std-01",
     name: "Aditya Pratama",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
+    avatar: "",
     bio: "Full-Stack Developer passionate about Next.js, TypeScript, and high-performance serverless web apps.",
     entryYear: 2024, // Year 2 -> Kelas XI
     github: "https://github.com/adityapratama",
@@ -42,7 +42,7 @@ export const mockStudents: StudentMock[] = [
   {
     id: "std-02",
     name: "Siti Rahmawati",
-    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&auto=format&fit=crop&q=80",
+    avatar: "",
     bio: "UI/UX Designer and Mobile Developer specializing in clean iOS/Android component systems and Figma prototyping.",
     entryYear: 2023, // Year 3 -> Kelas XII
     github: "https://github.com/sitirahma",
@@ -52,7 +52,7 @@ export const mockStudents: StudentMock[] = [
   {
     id: "std-03",
     name: "Fikri Ardiansyah",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
+    avatar: "",
     bio: "Backend Engineer with expertise in Node.js, Express, Drizzle ORM, and RESTful API architecture.",
     entryYear: 2025, // Year 1 -> Kelas X
     github: "https://github.com/fikriardiansyah",
@@ -62,7 +62,7 @@ export const mockStudents: StudentMock[] = [
   {
     id: "std-04",
     name: "Bagas Setiawan",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80",
+    avatar: "",
     bio: "Alumni TeFa PPLG currently working as Junior Frontend Developer at a tech startup in Jakarta.",
     entryYear: 2022, // Alumni
     github: "https://github.com/bagassetiawan",

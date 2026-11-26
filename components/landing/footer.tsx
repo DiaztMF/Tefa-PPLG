@@ -25,6 +25,7 @@ export function Footer() {
               <li><Link href="/" className="hover:text-primary transition-colors">Beranda</Link></li>
               <li><Link href="/showcase" className="hover:text-primary transition-colors">Katalog Showcase</Link></li>
               <li><Link href="/students" className="hover:text-primary transition-colors">Direktori Talenta Siswa</Link></li>
+              <li><Link href="/news" className="hover:text-primary transition-colors">Berita & Rilis</Link></li>
               <li><Link href="/admin" className="hover:text-primary transition-colors">Admin Studio CMS</Link></li>
             </ul>
           </div>

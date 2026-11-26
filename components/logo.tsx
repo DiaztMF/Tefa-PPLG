@@ -41,7 +41,7 @@ export function Logo({
     <div className={cn("inline-flex items-center gap-2.5 group select-none", className)}>
       <div
         className={cn(
-          "relative flex items-center justify-center shrink-0 overflow-hidden transition-transform duration-200 group-hover:scale-105",
+          "relative flex items-center justify-center shrink-0 overflow-hidden",
           imgClassName
         )}
         style={{ width: `${w}px`, height: `${h}px` }}
