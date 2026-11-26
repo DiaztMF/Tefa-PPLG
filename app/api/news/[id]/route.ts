@@ -1,3 +1,13 @@
+import { NextRequest, NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
+import { db, isDatabaseConfigured } from "@/lib/db";
+import { news } from "@/lib/db/schema";
+import { requireAdminSession } from "@/lib/auth-guard";
+
+interface RouteContext {
+  params: Promise<{ id: string }>;
+}
+
 function toSlug(title: string): string {
   return title
     .toLowerCase()
@@ -53,6 +63,25 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     console.error("PUT /api/news/[id] error:", err);
     return NextResponse.json(
       { error: "Gagal memperbarui berita." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest, context: RouteContext) {
+  const unauthorized = await requireAdminSession(request);
+  if (unauthorized) return unauthorized;
+
+  try {
+    const { id } = await context.params;
+    if (isDatabaseConfigured()) {
+      await db.delete(news).where(eq(news.id, id));
+    }
+    return NextResponse.json({ success: true, id });
+  } catch (err) {
+    console.error("DELETE /api/news/[id] error:", err);
+    return NextResponse.json(
+      { error: "Gagal menghapus berita." },
       { status: 500 }
     );
   }

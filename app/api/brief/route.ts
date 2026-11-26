@@ -1,4 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+import { eq } from "drizzle-orm";
+import { db, isDatabaseConfigured } from "@/lib/db";
+import { briefs } from "@/lib/db/schema";
+import { getBriefs } from "@/lib/db/queries";
+import { requireAdminSession } from "@/lib/auth-guard";
+
+export async function GET(request: NextRequest) {
+  const unauthorized = await requireAdminSession(request);
+  if (unauthorized) return unauthorized;
+
+  const data = await getBriefs();
+  return NextResponse.json({ briefs: data });
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,10 +26,24 @@ export async function POST(request: NextRequest) {
     }
 
     const briefId = `brief-${Date.now()}`;
-    const targetNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6281234567890";
-    const schoolName = process.env.NEXT_PUBLIC_SCHOOL_NAME || "SMK Negeri 2 Surakarta";
+    const targetNumber =
+      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "6281234567890";
+    const schoolName =
+      process.env.NEXT_PUBLIC_SCHOOL_NAME || "SMK Negeri 2 Surakarta";
 
-    // Formatted WhatsApp message string
+    if (isDatabaseConfigured()) {
+      await db.insert(briefs).values({
+        id: briefId,
+        name: String(name).trim(),
+        org: org ? String(org).trim() : null,
+        whatsapp: String(whatsapp).trim(),
+        service: String(service || "Web Development"),
+        budget: String(budget || "5 - 15 Juta"),
+        briefText: String(brief).trim(),
+        status: "Baru",
+      });
+    }
+
     const formattedMessage = `Halo Admin TeFa PPLG ${encodeURIComponent(schoolName)},%0A%0ASaya ingin berkonsultasi mengenai proyek:%0A- *Nama:* ${encodeURIComponent(name)}%0A- *Instansi/Perusahaan:* ${encodeURIComponent(org || "-")}%0A- *No. WA:* ${encodeURIComponent(whatsapp)}%0A- *Layanan:* ${encodeURIComponent(service)}%0A- *Estimasi Budget:* ${encodeURIComponent(budget)}%0A- *Briefing Proyek:* ${encodeURIComponent(brief)}`;
 
     const waRedirectUrl = `https://wa.me/${targetNumber.replace(/[^0-9]/g, "")}?text=${formattedMessage}`;
@@ -25,11 +52,42 @@ export async function POST(request: NextRequest) {
       success: true,
       briefId,
       waRedirectUrl,
+      persisted: isDatabaseConfigured(),
       message: "Brief berhasil diterima dan tersimpan di sistem.",
     });
-  } catch (error) {
+  } catch (err) {
+    console.error("POST /api/brief error:", err);
     return NextResponse.json(
       { error: "Gagal memproses brief proyek." },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  const unauthorized = await requireAdminSession(request);
+  if (unauthorized) return unauthorized;
+
+  try {
+    const body = await request.json();
+    const { id, status } = body;
+
+    if (!id || !status) {
+      return NextResponse.json(
+        { error: "ID dan status wajib diisi." },
+        { status: 400 }
+      );
+    }
+
+    if (isDatabaseConfigured()) {
+      await db.update(briefs).set({ status }).where(eq(briefs.id, id));
+    }
+
+    return NextResponse.json({ success: true, id, status });
+  } catch (err) {
+    console.error("PATCH /api/brief error:", err);
+    return NextResponse.json(
+      { error: "Gagal memperbarui status brief." },
       { status: 500 }
     );
   }
