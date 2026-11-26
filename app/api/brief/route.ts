@@ -5,6 +5,32 @@ import { briefs } from "@/lib/db/schema";
 import { getBriefs } from "@/lib/db/queries";
 import { requireAdminSession } from "@/lib/auth-guard";
 
+const briefRateLimit = new Map<string, number[]>();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 menit
+const RATE_LIMIT_MAX = 5; // maksimal 5 brief per menit per IP
+
+function getClientIp(request: NextRequest): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    return forwarded.split(",")[0].trim();
+  }
+  return request.headers.get("x-real-ip") || "unknown";
+}
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const timestamps = briefRateLimit.get(ip) || [];
+  const recent = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
+  briefRateLimit.set(ip, recent);
+  return recent.length >= RATE_LIMIT_MAX;
+}
+
+function recordBriefAttempt(ip: string): void {
+  const now = Date.now();
+  const timestamps = briefRateLimit.get(ip) || [];
+  timestamps.push(now);
+  briefRateLimit.set(ip, timestamps);
+}
 export async function GET(request: NextRequest) {
   const unauthorized = await requireAdminSession(request);
   if (unauthorized) return unauthorized;
@@ -15,6 +41,14 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const ip = getClientIp(request);
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "Terlalu banyak permintaan. Coba lagi dalam 1 menit." },
+        { status: 429 }
+      );
+    }
+    recordBriefAttempt(ip);
     const body = await request.json();
     const { name, org, whatsapp, service, budget, brief } = body;
 

@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Lock, Menu } from "lucide-react";
 import { Logo } from "@/components/logo";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetClose,
@@ -15,10 +16,6 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
-interface NavbarProps {
-  onOpenBriefModal: () => void;
-}
-
 const navLinks = [
   { href: "/", label: "Beranda" },
   { href: "/#layanan", label: "Layanan" },
@@ -27,9 +24,12 @@ const navLinks = [
   { href: "/news", label: "Berita" },
 ];
 
-export function Navbar({ onOpenBriefModal }: NavbarProps) {
+export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [hash] = useState<string>(
+    () => (typeof window !== "undefined" ? window.location.hash.replace("#", "") : "")
+  );
 
   return (
     <header className="w-full h-[72px] bg-card border-b border-border sticky top-0 z-40">
@@ -41,19 +41,27 @@ export function Navbar({ onOpenBriefModal }: NavbarProps) {
           className="hidden md:flex items-center gap-7 text-sm font-medium text-muted-foreground"
         >
           {navLinks.map((link) => {
+            const isHashLink = link.href.startsWith("/#");
+            const [, linkHash] = link.href.split("#");
             const isActive =
               link.href === "/"
                 ? pathname === "/"
-                : !link.href.startsWith("/#") &&
-                  pathname.startsWith(link.href);
+                : isHashLink
+                ? pathname === "/" && linkHash === hash
+                : pathname === link.href || pathname.startsWith(`${link.href}/`);
 
             const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-              if (link.href === "/#layanan") {
+              if (isHashLink) {
                 e.preventDefault();
-                router.push("/");
-                setTimeout(() => {
-                  document.querySelector("#layanan")?.scrollIntoView({ behavior: "smooth" });
-                }, 0);
+                if (pathname === "/") {
+                  document.querySelector(`#${linkHash}`)?.scrollIntoView({ behavior: "smooth" });
+                } else {
+                  router.push("/");
+                  router.push("/#layanan");
+                  setTimeout(() => {
+                    document.querySelector(`#${linkHash}`)?.scrollIntoView({ behavior: "smooth" });
+                  }, 100);
+                }
               }
             };
 
@@ -76,49 +84,12 @@ export function Navbar({ onOpenBriefModal }: NavbarProps) {
         <div className="flex items-center gap-2">
           <Button
             size="lg"
-            onClick={onOpenBriefModal}
-            className="hidden sm:inline-flex bg-primary text-primary-foreground hover:bg-primary/90 font-medium px-6 rounded-lg text-sm transition-all shadow-sm hover:shadow"
+            onClick={() => router.push("/login")}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-2.5 text-base font-medium rounded-lg shadow-md hover:shadow-lg"
           >
-            Mulai Proyek
+            <Lock className="w-4 h-4 mr-2" />
+            Masuk Admin
           </Button>
-
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="md:hidden"
-                aria-label="Buka menu navigasi"
-              >
-                <Menu className="w-5 h-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-72 bg-card">
-              <SheetHeader>
-                <SheetTitle>Navigasi TeFa PPLG</SheetTitle>
-              </SheetHeader>
-              <div className="flex flex-col gap-2 px-4 pt-2">
-                {navLinks.map((link) => (
-                  <SheetClose asChild key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-secondary hover:text-primary transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  </SheetClose>
-                ))}
-                <SheetClose asChild>
-                  <Button
-                    onClick={onOpenBriefModal}
-                    className="mt-4 w-full bg-primary text-primary-foreground"
-                  >
-                    Mulai Proyek
-                  </Button>
-                </SheetClose>
-              </div>
-            </SheetContent>
-          </Sheet>
         </div>
       </div>
     </header>
