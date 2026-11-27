@@ -1,17 +1,17 @@
-import "dotenv/config";
-import { db, isDatabaseConfigured } from "./index";
-import { students, projects, projectStudents, briefs, news } from "./schema";
-import { mockProjects, mockStudents } from "@/lib/data/mock-data";
+import "dotenv/config"
+import { db, isDatabaseConfigured } from "./index"
+import { students, projects, projectStudents, briefs, news } from "./schema"
+import { mockProjects, mockStudents } from "@/lib/data/mock-data"
 
 async function seed() {
   if (!isDatabaseConfigured()) {
     console.error(
       "DATABASE_URL belum dikonfigurasi (masih menggunakan template placeholder). Isi .env terlebih dahulu sebelum menjalankan seed."
-    );
-    process.exit(1);
+    )
+    process.exit(1)
   }
 
-  console.log("Seeding database TeFa PPLG...");
+  console.log("Seeding database TeFa PPLG...")
 
   for (const std of mockStudents) {
     await db
@@ -27,7 +27,7 @@ async function seed() {
         github: std.github ?? null,
         linkedin: std.linkedin ?? null,
       })
-      .onConflictDoNothing();
+      .onConflictDoNothing()
   }
 
   for (const proj of mockProjects) {
@@ -45,7 +45,7 @@ async function seed() {
         techStack: JSON.stringify(proj.techStack),
         createdAt: new Date(proj.createdAt),
       })
-      .onConflictDoNothing();
+      .onConflictDoNothing()
 
     for (const member of proj.team) {
       await db
@@ -55,7 +55,7 @@ async function seed() {
           studentId: member.studentId,
           role: member.role,
         })
-        .onConflictDoNothing();
+        .onConflictDoNothing()
     }
   }
 
@@ -72,6 +72,7 @@ async function seed() {
         briefText:
           "Pengembangan portal perusahaan responsif dengan integrasi CMS berita dan galeri produk.",
         status: "Baru",
+        trackingToken: "track-01",
       },
       {
         id: "brief-02",
@@ -83,9 +84,10 @@ async function seed() {
         briefText:
           "Sistem rekam medis digital pasien klinik dan pendaftaran antrean online.",
         status: "Diskusi",
+        trackingToken: "track-02",
       },
     ])
-    .onConflictDoNothing();
+    .onConflictDoNothing()
 
   await db
     .insert(news)
@@ -107,14 +109,14 @@ async function seed() {
         author: "Instruktur Industri PPLG",
       },
     ])
-    .onConflictDoNothing();
+    .onConflictDoNothing()
 
-  console.log("Seed selesai!");
+  console.log("Seed selesai!")
 }
 
 seed()
   .then(() => process.exit(0))
   .catch((err) => {
-    console.error("Gagal menjalankan seed:", err);
-    process.exit(1);
-  });
+    console.error("Gagal menjalankan seed:", err)
+    process.exit(1)
+  })

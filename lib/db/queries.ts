@@ -1,4 +1,4 @@
-import { desc, eq, lte } from "drizzle-orm";
+import { and, desc, eq, lte, or } from "drizzle-orm";
 import { db, isDatabaseConfigured } from "@/lib/db";
 import {
   briefs,
@@ -39,6 +39,8 @@ export interface ProjectItem {
   techStack: string[];
   team: ProjectTeamMember[];
   createdAt: string;
+  status?: string;
+  submittedBy?: string;
 }
 
 export interface BriefItem {
@@ -196,14 +198,68 @@ export async function getStudentById(
   }
 }
 
-export async function getProjects(): Promise<ProjectItem[]> {
+export async function getStudentByUser(
+  userId: string,
+  email: string
+): Promise<StudentItem | null> {
+  if (!isDatabaseConfigured()) return null;
+
+  try {
+    const [row] = await db
+      .select()
+      .from(students)
+      .where(or(eq(students.userId, userId), eq(students.email, email)))
+      .limit(1);
+
+    if (!row) return null;
+
+    return {
+      id: row.id,
+      name: row.name,
+      avatar: row.avatar || "",
+      bio: row.bio || "",
+      entryYear: row.entryYear,
+      github: row.github ?? undefined,
+      linkedin: row.linkedin ?? undefined,
+      skills: parseStringArray(row.skills),
+    };
+  } catch (err) {
+    if (process.env.NODE_ENV === "production") {
+      throw err;
+    }
+    console.warn("Fallback getStudentByUser ke mock data:", err);
+    return null;
+  }
+}
+
+function findApprovedMockProject(id: string): ProjectItem | null {
+  const project = mockProjects.find((p) => p.id === id) as
+    | ProjectItem
+    | undefined;
+  if (!project || (project.status ?? "approved") !== "approved") return null;
+  return project;
+}
+
+export async function getProjects(status?: string): Promise<ProjectItem[]> {
+  const mockData =
+    status !== undefined
+      ? mockProjects.filter(
+          (p) => ((p as ProjectItem).status ?? "approved") === status
+        )
+      : mockProjects;
+
   if (!isDatabaseConfigured()) {
-    return mockProjects;
+    return mockData;
   }
 
   try {
+    const projectQuery = db.select().from(projects);
+    const filteredQuery =
+      status !== undefined
+        ? projectQuery.where(eq(projects.status, status))
+        : projectQuery;
     const [projectRows, relationRows] = await Promise.all([
-      db.select().from(projects).orderBy(desc(projects.createdAt)),
+      filteredQuery.orderBy(desc(projects.createdAt)),
       db
         .select({
           projectId: projectStudents.projectId,
@@ -238,13 +294,15 @@ export async function getProjects(): Promise<ProjectItem[]> {
       techStack: parseStringArray(row.techStack),
       team: teamMap.get(row.id) ?? [],
       createdAt: row.createdAt.toISOString().split("T")[0],
+      status: row.status,
+      submittedBy: row.submittedBy ?? undefined,
     }));
   } catch (err) {
     if (process.env.NODE_ENV === "production") {
       throw err;
     }
     console.warn("Fallback getProjects ke mock data:", err);
-    return mockProjects;
+    return mockData;
   }
 }
 
@@ -252,14 +310,14 @@ export async function getProjectById(
   id: string
 ): Promise<ProjectItem | null> {
   if (!isDatabaseConfigured()) {
-    return mockProjects.find((p) => p.id === id) ?? null;
+    return findApprovedMockProject(id);
   }
 
   try {
     const [row] = await db
       .select()
       .from(projects)
-      .where(eq(projects.id, id))
+      .where(and(eq(projects.id, id), eq(projects.status, "approved")))
       .limit(1);
 
     if (!row) return null;
@@ -286,13 +344,15 @@ export async function getProjectById(
       techStack: parseStringArray(row.techStack),
       team: relationRows,
       createdAt: row.createdAt.toISOString().split("T")[0],
+      status: row.status,
+      submittedBy: row.submittedBy ?? undefined,
     };
   } catch (err) {
     if (process.env.NODE_ENV === "production") {
       throw err;
     }
     console.warn("Fallback getProjectById ke mock data:", err);
-    return mockProjects.find((p) => p.id === id) ?? null;
+    return findApprovedMockProject(id);
   }
 }
 

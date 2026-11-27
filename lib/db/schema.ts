@@ -3,10 +3,11 @@ import {
   text,
   varchar,
   integer,
+  bigint,
   timestamp,
   boolean,
   primaryKey,
-} from "drizzle-orm/pg-core";
+} from "drizzle-orm/pg-core"
 
 export const students = pgTable("students", {
   id: varchar("id", { length: 64 }).primaryKey(),
@@ -17,10 +18,12 @@ export const students = pgTable("students", {
   skills: text("skills").default("[]").notNull(),
   github: text("github"),
   linkedin: text("linkedin"),
-  email: text("email").notNull(),
-  userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
+  email: text("email").notNull().unique(),
+  userId: text("user_id")
+    .unique()
+    .references(() => user.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+})
 
 export const projects = pgTable("projects", {
   id: varchar("id", { length: 64 }).primaryKey(),
@@ -33,10 +36,11 @@ export const projects = pgTable("projects", {
   repoUrl: text("repo_url"),
   techStack: text("tech_stack").notNull(),
   status: text("status").default("pending").notNull(),
-  submittedBy: text("submitted_by").references(() => students.id, { onDelete: "cascade" }),
+  submittedBy: text("submitted_by").references(() => students.id, {
+    onDelete: "cascade",
+  }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
+})
 
 export const projectStudents = pgTable(
   "project_students",
@@ -50,7 +54,7 @@ export const projectStudents = pgTable(
     role: text("role").notNull(),
   },
   (table) => [primaryKey({ columns: [table.projectId, table.studentId] })]
-);
+)
 
 export const briefs = pgTable("briefs", {
   id: varchar("id", { length: 64 }).primaryKey(),
@@ -60,9 +64,10 @@ export const briefs = pgTable("briefs", {
   service: text("service").notNull(),
   budget: text("budget").notNull(),
   briefText: text("brief_text").notNull(),
+  trackingToken: text("tracking_token").notNull().unique(),
   status: text("status").default("Baru").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+})
 
 export const news = pgTable("news", {
   id: varchar("id", { length: 64 }).primaryKey(),
@@ -71,8 +76,14 @@ export const news = pgTable("news", {
   content: text("content").notNull(),
   author: text("author").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+})
 
+// Better Auth rate limiting (shared across serverless instances).
+export const rateLimit = pgTable("rateLimit", {
+  key: text("key").primaryKey(),
+  count: integer("count").notNull(),
+  lastRequest: bigint("lastRequest", { mode: "number" }).notNull(),
+})
 // Better Auth tables
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -80,13 +91,13 @@ export const user = pgTable("user", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
-  role: text("role").default("admin").notNull(),
+  role: text("role").default("siswa").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
-});
+})
 
 export const session = pgTable("session", {
   id: text("id").primaryKey(),
@@ -101,7 +112,7 @@ export const session = pgTable("session", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-});
+})
 
 export const account = pgTable("account", {
   id: text("id").primaryKey(),
@@ -121,7 +132,7 @@ export const account = pgTable("account", {
   updatedAt: timestamp("updated_at")
     .$onUpdate(() => new Date())
     .notNull(),
-});
+})
 
 export const verification = pgTable("verification", {
   id: text("id").primaryKey(),
@@ -132,15 +143,4 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp("updated_at")
     .$onUpdate(() => new Date())
     .notNull(),
-});
-
-export const auditLogs = pgTable("audit_logs", {
-  id: varchar("id", { length: 64 }).primaryKey(),
-  userId: text("user_id").references(() => user.id, { onDelete: "set null" }),
-  action: text("action").notNull(),
-  tableName: text("table_name").notNull(),
-  targetId: text("target_id"),
-  oldValues: text("old_values"),
-  newValues: text("new_values"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+})

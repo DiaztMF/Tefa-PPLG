@@ -8,6 +8,27 @@
       "when": 1795579388590,
       "tag": "0000_amusing_wild_child",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795787493533,
+      "tag": "0001_hard_boomerang",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795789250668,
+      "tag": "0002_clumsy_cannonball",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795791339980,
+      "tag": "0003_boring_the_watchers",
+      "breakpoints": true
     }
   ]
 }
