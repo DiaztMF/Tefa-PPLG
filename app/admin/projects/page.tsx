@@ -21,7 +21,18 @@ import {
   CheckCircle2,
   UploadCloud,
   Loader2,
+  XCircle,
 } from "lucide-react";
+
+function getStatusBadgeClass(status: string) {
+  if (status === "pending") {
+    return "bg-amber-500/10 text-amber-700 border-amber-500/30";
+  }
+  if (status === "approved") {
+    return "bg-emerald-500/10 text-emerald-700 border-emerald-500/30";
+  }
+  return "bg-muted text-muted-foreground border-border";
+}
 
 export default function AdminProjectsPage() {
   const [projectList, setProjectList] = useState<ProjectItem[]>([]);
@@ -33,6 +44,7 @@ export default function AdminProjectsPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadStatusMsg, setUploadStatusMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [pendingOnly, setPendingOnly] = useState(false);
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [newProject, setNewProject] = useState({
@@ -231,6 +243,29 @@ export default function AdminProjectsPage() {
       setIsDeletingId(null);
     }
   };
+  const handleStatusChange = async (
+    id: string,
+    status: "approved" | "rejected"
+  ) => {
+    setErrorMsg("");
+    try {
+      const res = await fetch(`/api/projects/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        setErrorMsg(data.error || "Gagal memperbarui status proyek.");
+        return;
+      }
+      setProjectList((prev) =>
+        prev.map((p) => (p.id === id ? { ...p, status } : p))
+      );
+    } catch {
+      setErrorMsg("Gagal menghubungi server saat memperbarui status.");
+    }
+  };
 
   const toggleStudentSelection = (sId: string) => {
     if (selectedStudentIds.includes(sId)) {
@@ -243,6 +278,9 @@ export default function AdminProjectsPage() {
     }
   };
 
+  const visibleProjects = pendingOnly
+    ? projectList.filter((p) => (p.status ?? "approved") === "pending")
+    : projectList;
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -517,21 +555,32 @@ export default function AdminProjectsPage() {
       )}
 
       <div className="p-6 rounded-xl bg-card border border-border space-y-4 shadow-sm">
-        <h3 className="font-heading font-semibold text-base text-foreground">
-          Daftar Proyek ({projectList.length})
-        </h3>
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="font-heading font-semibold text-base text-foreground">
+            Daftar Proyek ({visibleProjects.length})
+          </h3>
+          <Button
+            variant={pendingOnly ? "default" : "outline"}
+            size="sm"
+            aria-pressed={pendingOnly}
+            onClick={() => setPendingOnly(!pendingOnly)}
+            className="shrink-0"
+          >
+            Pending
+          </Button>
+        </div>
 
         {isLoadingData ? (
           <div className="py-8 text-center text-xs text-muted-foreground">
             Memuat proyek...
           </div>
-        ) : projectList.length === 0 ? (
+        ) : visibleProjects.length === 0 ? (
           <div className="py-8 text-center text-xs text-muted-foreground">
             Belum ada proyek. Klik “Tambah Proyek Baru” untuk membuat.
           </div>
         ) : (
           <div className="space-y-3">
-            {projectList.map((project) => (
+            {visibleProjects.map((project) => (
               <div
                 key={project.id}
                 className="p-4 rounded-lg bg-background border border-border flex items-center justify-between gap-4 text-xs"
@@ -540,6 +589,11 @@ export default function AdminProjectsPage() {
                   <div className="font-heading font-semibold text-sm text-foreground">
                     {project.title}
                   </div>
+                  <span
+                    className={`inline-flex items-center rounded border px-1.5 py-0.5 text-[10px] ${getStatusBadgeClass(project.status ?? "approved")}`}
+                  >
+                    {project.status ?? "approved"}
+                  </span>
                   <span className="inline-flex items-center gap-1 text-muted-foreground">
                     <Users className="w-3 h-3" /> {project.team.length} Siswa
                   </span>
@@ -549,6 +603,22 @@ export default function AdminProjectsPage() {
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleStatusChange(project.id, "approved")}
+                    className="shrink-0"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 mr-1" /> Setujui
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleStatusChange(project.id, "rejected")}
+                    className="shrink-0"
+                  >
+                    <XCircle className="w-3.5 h-3.5 mr-1" /> Tolak
+                  </Button>
                   <Button
                     variant="outline"
                     size="sm"

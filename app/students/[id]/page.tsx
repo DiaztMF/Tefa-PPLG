@@ -29,7 +29,7 @@ export default async function StudentProfilePage({ params }: PageProps) {
   const { id } = await params;
   const [student, allProjects] = await Promise.all([
     getStudentById(id),
-    getProjects(),
+    getProjects("approved"),
   ]);
 
   if (!student) {

@@ -1,35 +1,31 @@
-"use client";
+"use client"
 
-import { useState } from "react";
+import { useState } from "react"
+import Link from "next/link"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  Send,
-  CheckCircle2,
-  ExternalLink,
-  AlertCircle,
-} from "lucide-react";
+} from "@/components/ui/select"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Send, CheckCircle2, ExternalLink, AlertCircle } from "lucide-react"
 
 interface BriefModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
 export function BriefModal({ isOpen, onClose }: BriefModalProps) {
@@ -40,50 +36,54 @@ export function BriefModal({ isOpen, onClose }: BriefModalProps) {
     service: "Web Development",
     budget: "5 - 15 Juta",
     brief: "",
-  });
+  })
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [waRedirectUrl, setWaRedirectUrl] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [waRedirectUrl, setWaRedirectUrl] = useState("")
+  const [trackingUrl, setTrackingUrl] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage("");
+    e.preventDefault()
+    setIsLoading(true)
+    setErrorMessage("")
 
     try {
       const response = await fetch("/api/brief", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (!response.ok || !data.success || !data.waRedirectUrl) {
         setErrorMessage(
-          data.error || "Gagal mengirim brief. Silakan periksa kembali isian Anda."
-        );
-        return;
+          data.error ||
+            "Gagal mengirim brief. Silakan periksa kembali isian Anda."
+        )
+        return
       }
 
-      setWaRedirectUrl(data.waRedirectUrl);
-      setIsSubmitted(true);
-      window.open(data.waRedirectUrl, "_blank", "noopener,noreferrer");
+      setWaRedirectUrl(data.waRedirectUrl)
+      setTrackingUrl(data.trackingUrl || "")
+      setIsSubmitted(true)
+      window.open(data.waRedirectUrl, "_blank", "noopener,noreferrer")
     } catch {
       setErrorMessage(
         "Terjadi kesalahan koneksi saat mengirim brief. Silakan coba lagi."
-      );
+      )
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const handleReset = () => {
-    setIsSubmitted(false);
-    setWaRedirectUrl("");
-    setErrorMessage("");
+    setIsSubmitted(false)
+    setWaRedirectUrl("")
+    setTrackingUrl("")
+    setErrorMessage("")
     setFormData({
       name: "",
       org: "",
@@ -91,44 +91,55 @@ export function BriefModal({ isOpen, onClose }: BriefModalProps) {
       service: "Web Development",
       budget: "5 - 15 Juta",
       brief: "",
-    });
-    onClose();
-  };
+    })
+    onClose()
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={handleReset}>
-      <DialogContent className="sm:max-w-xl p-6 sm:p-8 bg-card border border-border">
+      <DialogContent className="border border-border bg-card p-6 sm:max-w-xl sm:p-8">
         <DialogHeader className="flex flex-col gap-2 text-left">
-          <DialogTitle className="font-heading font-bold text-2xl text-foreground">
+          <DialogTitle className="font-heading text-2xl font-bold text-foreground">
             Formulir Brief & Konsultasi Proyek
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground">
-            Kirimkan rincian kebutuhan perangkat lunak Anda. Tim TeFa PPLG akan segera menghubungi untuk diskusi teknis & penawaran.
+            Kirimkan rincian kebutuhan perangkat lunak Anda. Tim TeFa PPLG akan
+            segera menghubungi untuk diskusi teknis & penawaran.
           </DialogDescription>
         </DialogHeader>
 
         {isSubmitted ? (
-          <div className="py-8 flex flex-col gap-4 text-center items-center">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-10 h-10" />
+          <div className="flex flex-col items-center gap-4 py-8 text-center">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+              <CheckCircle2 className="h-10 w-10" />
             </div>
             <div className="flex flex-col gap-1">
-              <h3 className="font-heading font-semibold text-xl text-foreground">
+              <h3 className="font-heading text-xl font-semibold text-foreground">
                 Brief Berhasil Terkirim!
               </h3>
-              <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-                Jika jendela WhatsApp tidak terbuka otomatis, klik tombol di bawah untuk tersambung ke instruktur TeFa.
+              <p className="mx-auto max-w-sm text-sm text-muted-foreground">
+                Jika jendela WhatsApp tidak terbuka otomatis, klik tombol di
+                bawah untuk tersambung ke instruktur TeFa.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3 mt-2">
+            {trackingUrl && (
+              <p className="text-xs text-muted-foreground">
+                Lacak status brief di{" "}
+                <Link href={trackingUrl} className="text-primary underline">
+                  halaman tracking
+                </Link>
+                . Simpan tautan ini.
+              </p>
+            )}
+            <div className="mt-2 flex flex-col gap-3 sm:flex-row">
               {waRedirectUrl && (
                 <Button
                   asChild
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                  className="bg-emerald-600 text-white hover:bg-emerald-700"
                 >
                   <a href={waRedirectUrl} target="_blank" rel="noreferrer">
                     Buka WhatsApp Sekarang
-                    <ExternalLink className="w-4 h-4 ml-2" />
+                    <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
                 </Button>
               )}
@@ -141,14 +152,14 @@ export function BriefModal({ isOpen, onClose }: BriefModalProps) {
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 pt-2">
             {errorMessage && (
               <Alert variant="destructive">
-                <AlertCircle className="w-4 h-4" />
+                <AlertCircle className="h-4 w-4" />
                 <AlertDescription className="text-xs">
                   {errorMessage}
                 </AlertDescription>
               </Alert>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="flex flex-col gap-2">
                 <Label
                   htmlFor="name"
@@ -185,7 +196,7 @@ export function BriefModal({ isOpen, onClose }: BriefModalProps) {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="flex flex-col gap-2">
                 <Label
                   htmlFor="whatsapp"
@@ -291,7 +302,7 @@ export function BriefModal({ isOpen, onClose }: BriefModalProps) {
               />
             </div>
 
-            <div className="pt-2 flex justify-end gap-3">
+            <div className="flex justify-end gap-3 pt-2">
               <Button
                 type="button"
                 variant="outline"
@@ -306,12 +317,12 @@ export function BriefModal({ isOpen, onClose }: BriefModalProps) {
                 disabled={isLoading}
               >
                 {isLoading ? "Mengirim..." : "Kirim Brief & Chat WA"}
-                <Send className="w-4 h-4 ml-2" />
+                <Send className="ml-2 h-4 w-4" />
               </Button>
             </div>
           </form>
         )}
       </DialogContent>
     </Dialog>
-  );
+  )
 }

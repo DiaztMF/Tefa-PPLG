@@ -54,22 +54,27 @@ export default function StudentSubmitProjectPage() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    loadStudents();
-  }, []);
+    const controller = new AbortController();
 
-  const loadStudents = async () => {
-    try {
-      const res = await fetch("/api/students", { cache: "no-store" });
-      if (res.ok) {
-        const data = await res.json();
-        setStudents(data.students || []);
-      } else {
-        setErrorMsg("Gagal memuat data siswa.");
-      }
-    } catch {
-      setErrorMsg("Gagal menghubungi server.");
-    }
-  };
+    fetch("/api/students/public", {
+      cache: "no-store",
+      signal: controller.signal,
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Gagal memuat data siswa.");
+        return res.json();
+      })
+      .then((data: { students?: { id: string; name: string }[] }) => {
+        if (!controller.signal.aborted) setStudents(data.students || []);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) {
+          setErrorMsg("Gagal menghubungi server.");
+        }
+      });
+
+    return () => controller.abort();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -186,6 +191,9 @@ export default function StudentSubmitProjectPage() {
             Ajukan Proyek Lainnya
           </Button>
         </div>
+        <Button asChild variant="link" className="w-full">
+          <Link href="/students/projects">Lihat Status Pengajuan Saya</Link>
+        </Button>
       </div>
     </div>
   );
@@ -363,9 +371,7 @@ export default function StudentSubmitProjectPage() {
                                   formData.teamMemberRoles[std.id] ||
                                   "Developer"
                                 }
-                                onValueChange={(val) =>
-                                  toggleStudentRole(std.id)
-                                }
+                                onValueChange={() => toggleStudentRole(std.id)}
                               >
                                 <SelectTrigger className="h-7 text-xs">
                                   <SelectValue />

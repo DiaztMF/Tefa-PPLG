@@ -11,6 +11,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ShowcasePage() {
-  const projects = await getProjects();
+  const projects = await getProjects("approved");
   return <ShowcaseCatalogue projects={projects} />;
 }
