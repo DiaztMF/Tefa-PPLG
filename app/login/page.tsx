@@ -11,70 +11,27 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ArrowLeft, Lock, Loader2, AlertCircle } from "lucide-react";
 
-const loginRateLimit = new Map<string, number[]>();
-const LOGIN_RATE_LIMIT_WINDOW = 60 * 1000; // 1 menit
-const LOGIN_RATE_LIMIT_MAX = 5; // maksimal 5 percobaan per menit per IP
 
-function getClientIp(): string {
-  // Client-side tidak dapat membaca IP langsung; gunakan placeholder unik per sesi
-  // Rate limit aktual harus dilakukan di sisi server (middleware atau API route)
-  return "client";
-}
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const timestamps = loginRateLimit.get(ip) || [];
-  const recent = timestamps.filter((t) => now - t < LOGIN_RATE_LIMIT_WINDOW);
-  loginRateLimit.set(ip, recent);
-  return recent.length >= LOGIN_RATE_LIMIT_MAX;
-}
-
-function recordLoginAttempt(ip: string): void {
-  const now = Date.now();
-  const timestamps = loginRateLimit.get(ip) || [];
-  timestamps.push(now);
-  loginRateLimit.set(ip, timestamps);
-}
-
-const ROLE_OPTIONS: { value: string; label: string }[] = [
-  { value: "admin", label: "Admin / Guru" },
-  { value: "siswa", label: "Siswa" },
-  { value: "klien", label: "Klien" },
-];
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/admin";
 
-  const [role, setRole] = useState<"admin" | "siswa" | "klien">("admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [rateLimitMsg, setRateLimitMsg] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
-    setRateLimitMsg("");
     setIsLoading(true);
 
-    const ip = getClientIp();
-    if (isRateLimited(ip)) {
-      setRateLimitMsg(
-        "Terlalu banyak percobaan login. Coba lagi dalam 1 menit."
-      );
-      setIsLoading(false);
-      return;
-    }
-    recordLoginAttempt(ip);
-
     try {
-      const { error } = await authClient.signIn.email({
+      const { data, error } = await authClient.signIn.email({
         email,
         password,
-        callbackURL: callbackUrl,
       });
 
       if (error) {
@@ -119,28 +76,6 @@ function LoginForm() {
           onSubmit={handleSubmit}
           className="p-6 sm:p-8 rounded-2xl bg-card border border-border shadow-sm space-y-5"
         >
-          <div className="space-y-2">
-            <Label htmlFor="role" className="text-xs font-medium">
-              Login sebagai
-            </Label>
-            <div className="flex flex-wrap gap-2">
-              {ROLE_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => setRole(opt.value as "admin" | "siswa" | "klien")}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border ${
-                    role === opt.value
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-background text-muted-foreground border-border hover:bg-secondary hover:text-foreground hover:border-border"
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
           <div className="space-y-2">
             <Label htmlFor="email" className="text-xs font-medium">
               Email
@@ -190,14 +125,6 @@ function LoginForm() {
           </Button>
         </form>
 
-        {rateLimitMsg && (
-          <Alert variant="destructive" className="border-destructive bg-destructive/10 text-destructive">
-            <AlertCircle className="w-4 h-4 text-destructive" />
-            <AlertDescription className="text-xs font-medium text-destructive">
-              {rateLimitMsg}
-            </AlertDescription>
-          </Alert>
-        )}
         {errorMessage && (
           <Alert variant="destructive" className="border-destructive bg-destructive/10 text-destructive">
             <AlertCircle className="w-4 h-4 text-destructive" />

@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { auth } from "@/lib/auth";
-import { isDatabaseConfigured } from "@/lib/db";
 
 const ALLOWED_MIME_TYPES = new Set([
   "image/jpeg",

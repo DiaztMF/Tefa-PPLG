@@ -19,12 +19,21 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: false,
   },
+  rateLimit: {
+    enabled: true,
+    window: 60,
+    max: 20,
+    storage: "database",
+    customRules: {
+      "/api/auth/sign-in/email": { window: 60, max: 5 },
+    },
+  },
   user: {
     additionalFields: {
       role: {
         type: "string",
         required: false,
-        defaultValue: "admin",
+        defaultValue: "siswa",
       },
     },
   },
