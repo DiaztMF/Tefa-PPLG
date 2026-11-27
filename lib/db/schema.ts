@@ -133,3 +133,14 @@ export const verification = pgTable("verification", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
+
+export const auditLogs = pgTable("audit_logs", {
+  id: varchar("id", { length: 64 }).primaryKey(),
+  userId: text("user_id").references(() => user.id, { onDelete: "set null" }),
+  action: text("action").notNull(),
+  tableName: text("table_name").notNull(),
+  targetId: text("target_id"),
+  oldValues: text("old_values"),
+  newValues: text("new_values"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
