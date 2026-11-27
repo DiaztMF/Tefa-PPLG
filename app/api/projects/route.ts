@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db, isDatabaseConfigured } from "@/lib/db";
 import { projectStudents, projects } from "@/lib/db/schema";
 import { getProjects } from "@/lib/db/queries";
-import { requireAdminSession } from "@/lib/auth-guard";
+import { auth } from "@/lib/auth";
 
 export async function GET() {
   const data = await getProjects();
@@ -10,8 +10,33 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const unauthorized = await requireAdminSession(request);
-  if (unauthorized) return unauthorized;
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  });
+
+  if (!session) {
+    return NextResponse.json(
+      { error: "Unauthorized. Silakan login terlebih dahulu." },
+      { status: 401 }
+    );
+  }
+
+  const user = session.user;
+  const studentId =
+    user && typeof user === "object" && "id" in user ? user.id : null;
+  const userRole =
+    user && typeof user === "object" && "role" in user
+      ? user.role
+      : null;
+  const isAdmin = userRole === "admin";
+  const isStudent = !!studentId;
+
+  if (!isAdmin && !isStudent) {
+    return NextResponse.json(
+      { error: "Unauthorized. Silakan login terlebih dahulu." },
+      { status: 401 }
+    );
+  }
 
   try {
     const body = await request.json();
@@ -29,12 +54,12 @@ export async function POST(request: NextRequest) {
 
     if (!title || !description || !category) {
       return NextResponse.json(
-        { error: "Judul, kategori, dan deskripsi proyek wajib diisi." },
+        { error: "Judul, deskripsi, dan kategori wajib diisi." },
         { status: 400 }
       );
     }
 
-    const id = `proj-${Date.now()}`;
+    const id = `proj-${crypto.randomUUID()}`;
     const techList: string[] = Array.isArray(techStack)
       ? techStack
       : String(techStack || "")
@@ -60,6 +85,8 @@ export async function POST(request: NextRequest) {
         techStack: JSON.stringify(
           techList.length > 0 ? techList : ["Next.js", "TypeScript"]
         ),
+        status: isAdmin ? "approved" : "pending",
+        submittedBy: studentId || null,
       });
 
       for (const member of teamList) {
@@ -89,6 +116,7 @@ export async function POST(request: NextRequest) {
         repoUrl: repoUrl || undefined,
         techStack: techList.length > 0 ? techList : ["Next.js", "TypeScript"],
         team: teamList,
+        status: isAdmin ? "approved" : "pending",
         createdAt: new Date().toISOString().split("T")[0],
       },
     });
