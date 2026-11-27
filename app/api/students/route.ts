@@ -4,7 +4,9 @@ import { students } from "@/lib/db/schema";
 import { getStudents } from "@/lib/db/queries";
 import { requireAdminSession } from "@/lib/auth-guard";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const unauthorized = await requireAdminSession(request);
+  if (unauthorized) return unauthorized;
   const data = await getStudents();
   return NextResponse.json({ students: data });
 }

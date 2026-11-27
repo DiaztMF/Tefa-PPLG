@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Lock, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,6 +30,7 @@ export function Navbar() {
   const [hash] = useState<string>(
     () => (typeof window !== "undefined" ? window.location.hash.replace("#", "") : "")
   );
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <header className="w-full h-[72px] bg-card border-b border-border sticky top-0 z-40">
@@ -54,12 +55,16 @@ export function Navbar() {
               if (isHashLink) {
                 e.preventDefault();
                 if (pathname === "/") {
-                  document.querySelector(`#${linkHash}`)?.scrollIntoView({ behavior: "smooth" });
+                  document.querySelector(`#${linkHash}`)?.scrollIntoView({
+                    behavior: "smooth",
+                  });
                 } else {
                   router.push("/");
                   router.push("/#layanan");
                   setTimeout(() => {
-                    document.querySelector(`#${linkHash}`)?.scrollIntoView({ behavior: "smooth" });
+                    document.querySelector(`#${linkHash}`)?.scrollIntoView({
+                      behavior: "smooth",
+                    });
                   }, 100);
                 }
               }
@@ -83,15 +88,61 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <Button
+            size="icon"
+            variant="outline"
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="md:hidden"
+            aria-label="Menu Admin"
+          >
+            <Menu className="w-4 h-4" />
+          </Button>
+          <Button
             size="lg"
             onClick={() => router.push("/login")}
             className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-2.5 text-base font-medium rounded-lg shadow-md hover:shadow-lg"
           >
-            <Lock className="w-4 h-4 mr-2" />
+            <Menu className="w-4 h-4 mr-2" />
             Masuk Admin
           </Button>
         </div>
       </div>
+
+      <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+        <SheetContent side="left" className="w-64 bg-card">
+          <SheetHeader>
+            <SheetTitle>Menu Admin</SheetTitle>
+            <SheetClose />
+          </SheetHeader>
+          <nav className="flex flex-col gap-1 px-3 pt-2">
+            {navLinks.map((link) => {
+              const isHashLink = link.href.startsWith("/#");
+              const [, linkHash] = link.href.split("#");
+              const isActive =
+                link.href === "/"
+                  ? pathname === "/"
+                  : isHashLink
+                  ? pathname === "/" && linkHash === hash
+                  : pathname === link.href ||
+                    pathname.startsWith(`${link.href}/`);
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium ${
+                    isActive
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-secondary hover:text-primary"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </SheetContent>
+      </Sheet>
     </header>
   );
 }
