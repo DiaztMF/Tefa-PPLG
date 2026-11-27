@@ -36,11 +36,18 @@ function recordLoginAttempt(ip: string): void {
   loginRateLimit.set(ip, timestamps);
 }
 
+const ROLE_OPTIONS: { value: string; label: string }[] = [
+  { value: "admin", label: "Admin / Guru" },
+  { value: "siswa", label: "Siswa" },
+  { value: "klien", label: "Klien" },
+];
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/admin";
 
+  const [role, setRole] = useState<"admin" | "siswa" | "klien">("admin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -75,7 +82,14 @@ function LoginForm() {
         return;
       }
 
-      router.push(callbackUrl);
+      // Redirect based on role
+      if (role === "admin") {
+        router.push(callbackUrl || "/admin");
+      } else if (role === "siswa") {
+        router.push("/students");
+      } else if (role === "klien") {
+        router.push("/");
+      }
       router.refresh();
     } catch {
       setErrorMessage(
@@ -105,26 +119,31 @@ function LoginForm() {
           onSubmit={handleSubmit}
           className="p-6 sm:p-8 rounded-2xl bg-card border border-border shadow-sm space-y-5"
         >
-          {errorMessage && (
-            <Alert variant="destructive" className="border-destructive bg-destructive/10 text-destructive">
-              <AlertCircle className="w-4 h-4 text-destructive" />
-              <AlertDescription className="text-xs font-medium text-destructive">
-                {errorMessage}
-              </AlertDescription>
-            </Alert>
-          )}
-          {rateLimitMsg && (
-            <Alert variant="destructive" className="border-destructive bg-destructive/10 text-destructive">
-              <AlertCircle className="w-4 h-4 text-destructive" />
-              <AlertDescription className="text-xs font-medium text-destructive">
-                {rateLimitMsg}
-              </AlertDescription>
-            </Alert>
-          )}
+          <div className="space-y-2">
+            <Label htmlFor="role" className="text-xs font-medium">
+              Login sebagai
+            </Label>
+            <div className="flex flex-wrap gap-2">
+              {ROLE_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => setRole(opt.value as "admin" | "siswa" | "klien")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border ${
+                    role === opt.value
+                      ? "bg-primary text-primary-foreground border-primary"
+                      : "bg-background text-muted-foreground border-border hover:bg-secondary hover:text-foreground hover:border-border"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <div className="space-y-2">
             <Label htmlFor="email" className="text-xs font-medium">
-              Email Admin / Instruktur
+              Email
             </Label>
             <Input
               id="email"
@@ -170,6 +189,23 @@ function LoginForm() {
             )}
           </Button>
         </form>
+
+        {rateLimitMsg && (
+          <Alert variant="destructive" className="border-destructive bg-destructive/10 text-destructive">
+            <AlertCircle className="w-4 h-4 text-destructive" />
+            <AlertDescription className="text-xs font-medium text-destructive">
+              {rateLimitMsg}
+            </AlertDescription>
+          </Alert>
+        )}
+        {errorMessage && (
+          <Alert variant="destructive" className="border-destructive bg-destructive/10 text-destructive">
+            <AlertCircle className="w-4 h-4 text-destructive" />
+            <AlertDescription className="text-xs font-medium text-destructive">
+              {errorMessage}
+            </AlertDescription>
+          </Alert>
+        )}
 
         <div className="text-center">
           <Link
