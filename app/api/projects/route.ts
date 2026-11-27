@@ -1,76 +1,70 @@
-import { NextRequest, NextResponse } from "next/server";
-import { db, isDatabaseConfigured } from "@/lib/db";
-import { projectStudents, projects } from "@/lib/db/schema";
-import { getProjects } from "@/lib/db/queries";
-import { auth } from "@/lib/auth";
+import { NextRequest, NextResponse } from "next/server"
+import { db, isDatabaseConfigured } from "@/lib/db"
+import { projectStudents, projects, students } from "@/lib/db/schema"
+import { getProjects, getStudentByUser } from "@/lib/db/queries"
+import { requireAdminSession } from "@/lib/auth-guard"
+import { isRateLimited } from "@/lib/rate-limit"
 
-const projectRateLimit = new Map<string, number[]>();
-const RATE_LIMIT_WINDOW = 60 * 1000;
-const RATE_LIMIT_MAX = 5;
-
+import { auth } from "@/lib/auth"
 function getClientIp(request: NextRequest): string {
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  return request.headers.get("x-real-ip") || "unknown";
+  const forwarded = request.headers.get("x-forwarded-for")
+  if (forwarded) return forwarded.split(",")[0].trim()
+  return request.headers.get("x-real-ip") || "unknown"
 }
 
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const recent = (projectRateLimit.get(ip) || []).filter(
-    (t) => now - t < RATE_LIMIT_WINDOW
-  );
-  projectRateLimit.set(ip, recent);
-  return recent.length >= RATE_LIMIT_MAX;
-}
+export async function GET(request: NextRequest) {
+  const unauthorized = await requireAdminSession(request)
+  if (unauthorized) return unauthorized
 
-function recordAttempt(ip: string): void {
-  const now = Date.now();
-  projectRateLimit.set(ip, [...(projectRateLimit.get(ip) || []), now]);
-}
-
-export async function GET() {
-  const data = await getProjects();
-  return NextResponse.json({ projects: data });
+  const data = await getProjects()
+  return NextResponse.json({ projects: data })
 }
 
 export async function POST(request: NextRequest) {
-  const ip = getClientIp(request);
-  if (isRateLimited(ip)) {
+  if (!isDatabaseConfigured()) {
     return NextResponse.json(
-      { error: "Terlalu banyak permintaan. Coba lagi dalam 1 menit." },
-      { status: 429 }
-    );
+      { error: "Database belum dikonfigurasi. Tidak dapat menyimpan data." },
+      { status: 503 }
+    )
   }
-  recordAttempt(ip);
 
   const session = await auth.api.getSession({
     headers: request.headers,
-  });
+  })
 
   if (!session) {
     return NextResponse.json(
       { error: "Unauthorized. Silakan login terlebih dahulu." },
       { status: 401 }
-    );
+    )
   }
 
-  const user = session.user;
-  const studentId =
-    user && typeof user === "object" && "id" in user ? user.id : null;
+  const user = session.user
   const userRole =
-    user && typeof user === "object" && "role" in user ? user.role : null;
-  const isAdmin = userRole === "admin";
-  const isStudent = userRole === "student" || userRole === "siswa";
+    user && typeof user === "object" && "role" in user ? user.role : null
+  const isAdmin = userRole === "admin"
+  const isStudent = userRole === "student" || userRole === "siswa"
 
   if (!isAdmin && !isStudent) {
     return NextResponse.json(
-      { error: "Forbidden. Hanya siswa atau admin yang dapat mengajukan proyek." },
+      {
+        error:
+          "Forbidden. Hanya siswa atau admin yang dapat mengajukan proyek.",
+      },
       { status: 403 }
-    );
+    )
+  }
+
+  const ip = getClientIp(request)
+  if (await isRateLimited(`project:${ip}`, 5, 60_000)) {
+    return NextResponse.json(
+      { error: "Terlalu banyak permintaan. Coba lagi dalam 1 menit." },
+      { status: 429 }
+    )
   }
 
   try {
-    const body = await request.json();
+    const body = await request.json()
     const {
       title,
       category,
@@ -81,56 +75,82 @@ export async function POST(request: NextRequest) {
       repoUrl,
       imageUrl,
       team,
-    } = body;
+    } = body
 
     if (!title || !description || !category) {
       return NextResponse.json(
         { error: "Judul, deskripsi, dan kategori wajib diisi." },
         { status: 400 }
-      );
+      )
     }
 
-    const id = `proj-${crypto.randomUUID()}`;
+    let submittedBy: string | null = null
+    if (!isAdmin) {
+      const student = await getStudentByUser(
+        String(user.id),
+        String(user.email ?? "")
+      )
+      if (!student) {
+        const [created] = await db
+          .insert(students)
+          .values({
+            id: `std-${crypto.randomUUID()}`,
+            name: String(user.name ?? user.email ?? "Siswa"),
+            email: String(user.email ?? ""),
+            userId: String(user.id),
+            entryYear: new Date().getFullYear(),
+            skills: "[]",
+            bio: "Siswa PPLG SMK",
+          })
+          .returning({ id: students.id })
+        submittedBy = created.id
+      } else {
+        submittedBy = student.id
+      }
+    }
+
+    const id = `proj-${crypto.randomUUID()}`
     const techList: string[] = Array.isArray(techStack)
       ? techStack
       : String(techStack || "")
           .split(",")
           .map((s) => s.trim())
-          .filter(Boolean);
+          .filter(Boolean)
 
-    const teamList: { studentId: string; studentName?: string; role: string }[] =
-      Array.isArray(team) ? team : [];
+    const teamList: {
+      studentId: string
+      studentName?: string
+      role: string
+    }[] = Array.isArray(team) ? team : []
 
-    if (isDatabaseConfigured()) {
-      await db.insert(projects).values({
-        id,
-        title: String(title).trim(),
-        category: String(category).trim(),
-        description: String(description).trim(),
-        longDescription: longDescription
-          ? String(longDescription).trim()
-          : String(description).trim(),
-        coverImage: imageUrl ? String(imageUrl).trim() : null,
-        liveUrl: liveUrl ? String(liveUrl).trim() : null,
-        repoUrl: repoUrl ? String(repoUrl).trim() : null,
-        techStack: JSON.stringify(
-          techList.length > 0 ? techList : ["Next.js", "TypeScript"]
-        ),
-        status: isAdmin ? "approved" : "pending",
-        submittedBy: studentId || null,
-      });
+    await db.insert(projects).values({
+      id,
+      title: String(title).trim(),
+      category: String(category).trim(),
+      description: String(description).trim(),
+      longDescription: longDescription
+        ? String(longDescription).trim()
+        : String(description).trim(),
+      coverImage: imageUrl ? String(imageUrl).trim() : null,
+      liveUrl: liveUrl ? String(liveUrl).trim() : null,
+      repoUrl: repoUrl ? String(repoUrl).trim() : null,
+      techStack: JSON.stringify(
+        techList.length > 0 ? techList : ["Next.js", "TypeScript"]
+      ),
+      status: isAdmin ? "approved" : "pending",
+      submittedBy,
+    })
 
-      for (const member of teamList) {
-        if (member.studentId) {
-          await db
-            .insert(projectStudents)
-            .values({
-              projectId: id,
-              studentId: member.studentId,
-              role: member.role || "Developer",
-            })
-            .onConflictDoNothing();
-        }
+    for (const member of teamList) {
+      if (member.studentId) {
+        await db
+          .insert(projectStudents)
+          .values({
+            projectId: id,
+            studentId: member.studentId,
+            role: member.role || "Developer",
+          })
+          .onConflictDoNothing()
       }
     }
 
@@ -150,12 +170,12 @@ export async function POST(request: NextRequest) {
         status: isAdmin ? "approved" : "pending",
         createdAt: new Date().toISOString().split("T")[0],
       },
-    });
+    })
   } catch (err) {
-    console.error("POST /api/projects error:", err);
+    console.error("POST /api/projects error:", err)
     return NextResponse.json(
       { error: "Gagal menyimpan proyek baru." },
       { status: 500 }
-    );
+    )
   }
 }

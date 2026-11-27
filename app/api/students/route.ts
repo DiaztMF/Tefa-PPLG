@@ -26,6 +26,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!isDatabaseConfigured()) {
+      return NextResponse.json(
+        { error: "Database belum dikonfigurasi. Tidak dapat menyimpan data." },
+        { status: 503 }
+      );
+    }
+
     const id = `std-${Date.now()}`;
     const skillList: string[] = Array.isArray(skills)
       ? skills
@@ -37,19 +44,17 @@ export async function POST(request: NextRequest) {
     const finalSkills =
       skillList.length > 0 ? skillList : ["HTML", "CSS", "JavaScript"];
 
-    if (isDatabaseConfigured()) {
-      await db.insert(students).values({
-        id,
-        name: String(name).trim(),
-        entryYear: Number(entryYear),
-        bio: bio ? String(bio).trim() : "Siswa PPLG SMK",
-        avatar: avatar ? String(avatar).trim() : null,
-        email: String(email).trim(),
-        skills: JSON.stringify(finalSkills),
-        github: github ? String(github).trim() : null,
-        linkedin: linkedin ? String(linkedin).trim() : null,
-      });
-    }
+    await db.insert(students).values({
+      id,
+      name: String(name).trim(),
+      entryYear: Number(entryYear),
+      bio: bio ? String(bio).trim() : "Siswa PPLG SMK",
+      avatar: avatar ? String(avatar).trim() : null,
+      email: email ? String(email).trim() : "",
+      skills: JSON.stringify(finalSkills),
+      github: github ? String(github).trim() : null,
+      linkedin: linkedin ? String(linkedin).trim() : null,
+    });
 
     return NextResponse.json({
       success: true,

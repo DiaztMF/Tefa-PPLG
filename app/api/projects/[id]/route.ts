@@ -66,6 +66,52 @@ export async function PUT(request: NextRequest, context: RouteContext) {
   }
 }
 
+export async function PATCH(request: NextRequest, context: RouteContext) {
+  const unauthorized = await requireAdminSession(request);
+  if (unauthorized) return unauthorized;
+
+  try {
+    const { id } = await context.params;
+    const body = await request.json();
+    const { status } = body;
+
+    if (status !== "approved" && status !== "rejected") {
+      return NextResponse.json(
+        { error: "Status harus approved atau rejected." },
+        { status: 400 }
+      );
+    }
+
+    if (!isDatabaseConfigured()) {
+      return NextResponse.json(
+        { error: "Database belum dikonfigurasi. Tidak dapat menyimpan data." },
+        { status: 503 }
+      );
+    }
+
+    const updated = await db
+      .update(projects)
+      .set({ status })
+      .where(eq(projects.id, id))
+      .returning({ id: projects.id });
+
+    if (updated.length === 0) {
+      return NextResponse.json(
+        { error: "Proyek tidak ditemukan." },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({ success: true, id, status });
+  } catch (err) {
+    console.error("PATCH /api/projects/[id] error:", err);
+    return NextResponse.json(
+      { error: "Gagal memperbarui status proyek." },
+      { status: 500 }
+    );
+  }
+}
+
 export async function DELETE(request: NextRequest, context: RouteContext) {
   const unauthorized = await requireAdminSession(request);
   if (unauthorized) return unauthorized;
