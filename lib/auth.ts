@@ -1,11 +1,11 @@
-import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { nextCookies } from "better-auth/next-js";
-import { db } from "@/lib/db";
-import * as schema from "@/lib/db/schema";
+import { betterAuth } from "better-auth"
+import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { nextCookies } from "better-auth/next-js"
+import { db } from "@/lib/db"
+import * as schema from "@/lib/db/schema"
 
 if (!process.env.BETTER_AUTH_SECRET) {
-  throw new Error("BETTER_AUTH_SECRET harus diatur di environment variabel");
+  throw new Error("BETTER_AUTH_SECRET harus diatur di environment variabel")
 }
 
 export const auth = betterAuth({
@@ -38,4 +38,4 @@ export const auth = betterAuth({
     },
   },
   plugins: [nextCookies()],
-});
+})
