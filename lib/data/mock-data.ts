@@ -4,6 +4,7 @@ export interface StudentMock {
   avatar: string;
   bio: string;
   entryYear: number;
+  email: string;
   github?: string;
   linkedin?: string;
   skills: string[];
@@ -33,7 +34,7 @@ export const mockStudents: StudentMock[] = [
     id: "std-01",
     name: "Aditya Pratama",
     avatar: "",
-    bio: "Full-Stack Developer passionate about Next.js, TypeScript, and high-performance serverless web apps.",
+    email: "aditya@example.com",
     entryYear: 2024, // Year 2 -> Kelas XI
     github: "https://github.com/adityapratama",
     linkedin: "https://linkedin.com/in/adityapratama",
@@ -42,7 +43,7 @@ export const mockStudents: StudentMock[] = [
   {
     id: "std-02",
     name: "Siti Rahmawati",
-    avatar: "",
+    email: "siti@example.com",
     bio: "UI/UX Designer and Mobile Developer specializing in clean iOS/Android component systems and Figma prototyping.",
     entryYear: 2023, // Year 3 -> Kelas XII
     github: "https://github.com/sitirahma",
@@ -56,7 +57,7 @@ export const mockStudents: StudentMock[] = [
     bio: "Backend Engineer with expertise in Node.js, Express, Drizzle ORM, and RESTful API architecture.",
     entryYear: 2025, // Year 1 -> Kelas X
     github: "https://github.com/fikriardiansyah",
-    linkedin: "https://linkedin.com/in/fikriardiansyah",
+    email: "fikri@example.com",
     skills: ["Node.js", "Express", "Drizzle ORM", "Docker", "PostgreSQL"],
   },
   {
@@ -65,7 +66,7 @@ export const mockStudents: StudentMock[] = [
     avatar: "",
     bio: "Alumni TeFa PPLG currently working as Junior Frontend Developer at a tech startup in Jakarta.",
     entryYear: 2022, // Alumni
-    github: "https://github.com/bagassetiawan",
+    email: "bagas@example.com",
     linkedin: "https://linkedin.com/in/bagassetiawan",
     skills: ["React", "Vue.js", "Tailwind CSS", "TypeScript"],
   },

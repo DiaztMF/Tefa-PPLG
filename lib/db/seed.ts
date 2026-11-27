@@ -22,6 +22,7 @@ async function seed() {
         avatar: std.avatar,
         bio: std.bio,
         entryYear: std.entryYear,
+        email: std.email,
         skills: JSON.stringify(std.skills),
         github: std.github ?? null,
         linkedin: std.linkedin ?? null,

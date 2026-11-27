@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { name, entryYear, bio, skills, github, linkedin, avatar } = body;
+    const { name, entryYear, bio, skills, github, linkedin, avatar, email } = body;
 
     if (!name || !entryYear) {
       return NextResponse.json(
@@ -42,6 +42,7 @@ export async function POST(request: NextRequest) {
         entryYear: Number(entryYear),
         bio: bio ? String(bio).trim() : "Siswa PPLG SMK",
         avatar: avatar ? String(avatar).trim() : null,
+        email: String(email).trim(),
         skills: JSON.stringify(finalSkills),
         github: github ? String(github).trim() : null,
         linkedin: linkedin ? String(linkedin).trim() : null,

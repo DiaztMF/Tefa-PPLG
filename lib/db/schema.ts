@@ -17,6 +17,8 @@ export const students = pgTable("students", {
   skills: text("skills").default("[]").notNull(),
   github: text("github"),
   linkedin: text("linkedin"),
+  email: text("email").notNull(),
+  userId: text("user_id").references(() => user.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
@@ -30,8 +32,11 @@ export const projects = pgTable("projects", {
   liveUrl: text("live_url"),
   repoUrl: text("repo_url"),
   techStack: text("tech_stack").notNull(),
+  status: text("status").default("pending").notNull(),
+  submittedBy: text("submitted_by").references(() => students.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
 
 export const projectStudents = pgTable(
   "project_students",
